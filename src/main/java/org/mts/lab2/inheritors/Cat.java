@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cat extends Pet {
-
     @Override
     public String getBreed() {
         return "Кошка";

@@ -11,5 +11,4 @@ public interface CreateAnimalService {
             count++;
         }
         return animals;
-    }
 }

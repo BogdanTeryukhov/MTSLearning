@@ -26,7 +26,6 @@ public class Wolf extends Predator {
     public String getCharacter() {
         return "Характеристика волка";
     }
-
     @Override
     public LocalDate getDateOfBirth() {
         return birth;

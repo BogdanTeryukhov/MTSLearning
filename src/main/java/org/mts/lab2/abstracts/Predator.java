@@ -1,7 +1,6 @@
 package org.mts.lab2.abstracts;
 
 import org.mts.lab2.abstracts.parent.AbstractAnimal;
-
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
