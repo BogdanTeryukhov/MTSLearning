@@ -2,8 +2,8 @@ package org.mts.lab1.service;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mts.lab1.entity.Purchase;
-import org.mts.lab1.entity.SimpleShop;
+import org.mts.lab1.dto.Purchase;
+import org.mts.lab1.dto.SimpleShop;
 
 public class SimpleShopCalculationsServiceTest {
 
