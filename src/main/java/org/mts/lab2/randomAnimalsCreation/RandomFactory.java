@@ -10,7 +10,7 @@ import org.mts.lab2.interfaces.RandomAnimalCreation;
 import java.util.Random;
 
 public class RandomFactory implements RandomAnimalCreation {
-    RandomAnimalCreation[] factories;
+    private RandomAnimalCreation[] factories;
 
     public static final RandomFactory factory = new RandomFactory(new RandomAnimalCreation[]{
             new CatFactory(),

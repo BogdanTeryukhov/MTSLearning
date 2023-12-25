@@ -6,7 +6,6 @@ import org.mts.lab2.interfaces.CreateAnimalService;
 import org.mts.lab2.interfaces.RandomAnimalCreation;
 
 public class CatFactory implements RandomAnimalCreation {
-
     @Override
     public Animal createRandomAnimal() {
         return new Cat();

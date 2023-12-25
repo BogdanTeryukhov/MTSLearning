@@ -1,24 +1,28 @@
 package org.mts.lab2.service;
 
+import org.mts.lab2.interfaces.Animal;
 import org.mts.lab2.interfaces.CreateAnimalService;
 import org.mts.lab2.randomAnimalsCreation.RandomFactory;
 
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
-    public void createParticularNumberOfAnimals(int numberAnimals) {
-        System.out.println("\n--Create particular number of Animals--");
+    @Override
+    public Animal[] createParticularNumberOfAnimals(int numberAnimals) {
+        Animal[] animals = new Animal[numberAnimals];
         for (int i = 0; i < numberAnimals; i++) {
-            System.out.println(RandomFactory.factory.createRandomAnimal().getClass());
+            animals[i] = RandomFactory.factory.createRandomAnimal();
         }
+        return animals;
     }
 
     @Override
-    public void createAnimals() {
-        System.out.println("--Create Animals from service Impl--");
+    public Animal[] createAnimals() {
+        Animal[] animals = new Animal[10];
         int count = 0;
         do {
-            System.out.println(RandomFactory.factory.createRandomAnimal().getClass());
+            animals[count] = RandomFactory.factory.createRandomAnimal();
             count++;
         } while (count < 10);
+        return animals;
     }
 }

@@ -1,6 +1,7 @@
 package org.mts.lab2.interfaces;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public interface Animal {
     /**
@@ -19,4 +20,9 @@ public interface Animal {
      * получение характеристики животного
      */
     String getCharacter();
+
+    /**
+     * получение даты рождения животного
+     */
+    LocalDate getDateOfBirth();
 }
