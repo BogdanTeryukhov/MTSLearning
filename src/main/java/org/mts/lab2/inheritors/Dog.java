@@ -8,6 +8,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Dog extends Pet {
 
+    public Dog() {
+    }
+
+    public Dog(LocalDate birth) {
+        super(birth);
+    }
+
     @Override
     public String getBreed() {
         return "Собака";

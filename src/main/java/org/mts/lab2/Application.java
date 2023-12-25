@@ -1,5 +1,7 @@
 package org.mts.lab2;
 import org.mts.lab2.interfaces.Animal;
+import org.mts.lab2.interfaces.CreateAnimalService;
+import org.mts.lab2.interfaces.SearchService;
 import org.mts.lab2.service.CreateAnimalServiceImpl;
 import org.mts.lab2.service.DefaultCreationOfAnimalService;
 import org.mts.lab2.service.SearchServiceImpl;
@@ -7,9 +9,9 @@ import org.mts.lab2.service.SearchServiceImpl;
 import java.util.Arrays;
 
 public class Application {
-    public static final CreateAnimalServiceImpl createImpl = new CreateAnimalServiceImpl();
+    public static final CreateAnimalService createImpl = new CreateAnimalServiceImpl();
     public static final DefaultCreationOfAnimalService defaultImpl = new DefaultCreationOfAnimalService();
-    public static final SearchServiceImpl searchImpl = new SearchServiceImpl();
+    public static final SearchService searchImpl = new SearchServiceImpl();
 
     public static void main(String[] args){
         Animal[] animals1 = createImpl.createAnimals();

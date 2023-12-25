@@ -6,6 +6,7 @@ import org.mts.lab2.randomAnimalsCreation.RandomFactory;
 
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
+    @Override
     public Animal[] createParticularNumberOfAnimals(int numberAnimals) {
         Animal[] animals = new Animal[numberAnimals];
         for (int i = 0; i < numberAnimals; i++) {

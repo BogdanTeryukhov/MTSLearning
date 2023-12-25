@@ -7,6 +7,14 @@ import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Wolf extends Predator {
+
+    public Wolf() {
+    }
+
+    public Wolf(LocalDate birth) {
+        super(birth);
+    }
+
     @Override
     public String getBreed() {
         return "Волк";
@@ -26,6 +34,7 @@ public class Wolf extends Predator {
     public String getCharacter() {
         return "Характеристика волка";
     }
+
     @Override
     public LocalDate getDateOfBirth() {
         return birth;

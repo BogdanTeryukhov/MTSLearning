@@ -7,6 +7,14 @@ import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Shark extends Predator {
+
+    public Shark() {
+    }
+
+    public Shark(LocalDate birth) {
+        super(birth);
+    }
+
     @Override
     public String getBreed() {
         return "Акула";

@@ -10,6 +10,14 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cat extends Pet {
+
+    public Cat() {
+    }
+
+    public Cat(LocalDate birth) {
+        super(birth);
+    }
+
     @Override
     public String getBreed() {
         return "Кошка";
