@@ -29,15 +29,15 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Animal[] findOlderAnimal(Animal[] animals, int N) {
-        if (N < 0){
+    public Animal[] findOlderAnimal(Animal[] animals, int number) {
+        if (number < 0){
             throw new IllegalArgumentException("Число должно быть больше 0");
         }
 
         int len = 0;
         for (int i = 0; i < animals.length; i++) {
             Animal currentAnimal = animals[i];
-            if (2023 - currentAnimal.getDateOfBirth().getYear() > N){
+            if (2023 - currentAnimal.getDateOfBirth().getYear() > number){
                 len++;
             }
         }
@@ -45,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
         int index = 0;
         for (int i = 0; i < animals.length; i++) {
             Animal currentAnimal = animals[i];
-            if (2023 - currentAnimal.getDateOfBirth().getYear() > N){
+            if (2023 - currentAnimal.getDateOfBirth().getYear() > number){
                 olderOnes[index++] = currentAnimal;
             }
         }
@@ -68,9 +68,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public void printDuplicates(List<List<Animal>> duplicatedAnimals) {
-        for (List<Animal> duplicatedAnimal : duplicatedAnimals) {
-            System.out.println(duplicatedAnimal.get(0) + " : " + duplicatedAnimal.get(1));
+    public void printDuplicates(Animal[] animals) {
+        List<List<Animal>> duplicates = findDuplicate(animals);
+        for (List<Animal> duplicatedAnimal : duplicates) {
+            String respond = String.format("Animal 1: %s : Animal 2: %s", duplicatedAnimal.get(0).toString(), duplicatedAnimal.get(1).toString());
+            System.out.println(respond);
         }
     }
 

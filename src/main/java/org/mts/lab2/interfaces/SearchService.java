@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SearchService {
     String[] findLeapYearNames(Animal[] animals);
-    Animal[] findOlderAnimal(Animal[] animals, int N);
+    Animal[] findOlderAnimal(Animal[] animals, int number);
     List<List<Animal>> findDuplicate(Animal[] animals);
-    void printDuplicates(List<List<Animal>> duplicatedAnimals);
+    void printDuplicates(Animal[] animals);
 }

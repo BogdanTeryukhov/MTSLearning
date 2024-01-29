@@ -1,12 +1,10 @@
 package org.mts.lab2.service;
 
-import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.jupiter.api.DisplayName;
-import org.mockito.Mockito;
 import org.mts.lab2.inheritors.Cat;
 import org.mts.lab2.inheritors.Dog;
 import org.mts.lab2.inheritors.Shark;
@@ -54,9 +52,9 @@ public class SearchServiceImplTest {
         Animal[] olderAnimals_Equals = new Animal[]{shark, wolf, shark2, wolf2};
         Animal[] olderAnimals_NotEquals = new Animal[]{cat, shark, wolf, shark2, wolf2, dog2};
 
-        int N = 20;
-        assertArrayEquals(olderAnimals_Equals, searchService.findOlderAnimal(animals, N));
-        assertNotEquals(olderAnimals_NotEquals, searchService.findOlderAnimal(animals, N));
+        int number = 20;
+        assertArrayEquals(olderAnimals_Equals, searchService.findOlderAnimal(animals, number));
+        assertNotEquals(olderAnimals_NotEquals, searchService.findOlderAnimal(animals, number));
     }
 
 

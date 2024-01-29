@@ -7,7 +7,6 @@ import org.mts.lab2.inheritors.Dog;
 import org.mts.lab2.inheritors.Shark;
 import org.mts.lab2.inheritors.Wolf;
 import org.mts.lab2.interfaces.Animal;
-import org.mts.lab2.randomAnimalsCreation.RandomFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
