@@ -3,10 +3,7 @@ package org.mts.lab2.config;
 import org.mts.lab2.interfaces.AnimalsRepository;
 import org.mts.lab2.interfaces.CreateAnimalService;
 import org.mts.lab2.interfaces.SearchService;
-import org.mts.lab2.service.AnimalsRepositoryImpl;
-import org.mts.lab2.service.CreateAnimalServiceImpl;
-import org.mts.lab2.service.DefaultCreationOfAnimalService;
-import org.mts.lab2.service.SearchServiceImpl;
+import org.mts.lab2.service.*;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +18,7 @@ public class AnimalConfig {
     }
 
     @Bean
+    @Scope("prototype")
     public CreateAnimalService createAnimalService(){
         return new CreateAnimalServiceImpl();
     }
@@ -28,5 +26,10 @@ public class AnimalConfig {
     @Bean
     public DefaultCreationOfAnimalService defaultCreationOfAnimalService(){
         return new DefaultCreationOfAnimalService();
+    }
+
+    @Bean
+    public BeanPostProcessorImpl myBeanPostProcessor() {
+        return new BeanPostProcessorImpl();
     }
 }
