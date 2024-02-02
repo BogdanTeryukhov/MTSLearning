@@ -3,16 +3,15 @@ package org.mts.lab2.service;
 import org.mts.lab2.interfaces.Animal;
 import org.mts.lab2.interfaces.CreateAnimalService;
 import org.mts.lab2.randomAnimalsCreation.RandomFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class CreateAnimalServiceImpl implements CreateAnimalService{
+import java.util.List;
+import java.util.Random;
 
-    public String AnimalType;
+@Service
+public class CreateAnimalServiceImpl implements CreateAnimalService {
+
+    private String animalType;
 
     @Override
     public Animal[] createParticularNumberOfAnimals(int numberAnimals) {
@@ -34,4 +33,19 @@ public class CreateAnimalServiceImpl implements CreateAnimalService{
         return animals;
     }
 
+    //Поменяешь этот метод на свою логику определения типа
+    public String defineTypeOfAnimal() {
+        List<String> typesOfAnimals = List.of("type1", "type2");
+        Random random = new Random();
+        int randomIndex = random.nextInt(typesOfAnimals.size());
+        return typesOfAnimals.get(randomIndex);
+    }
+
+    public String getAnimalType() {
+        return animalType;
+    }
+
+    public void setAnimalType(String animalType) {
+        this.animalType = animalType;
+    }
 }
