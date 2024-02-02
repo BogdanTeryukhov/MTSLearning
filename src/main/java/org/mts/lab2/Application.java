@@ -20,6 +20,6 @@ public class Application {
 
         System.out.println(Arrays.toString(searchImpl.findLeapYearNames(animals1)));
         System.out.println(Arrays.toString(searchImpl.findOlderAnimal(animals2, 10)));
-        searchImpl.findDuplicate(animals3);
+        searchImpl.printDuplicates(animals3);
     }
 }
