@@ -1,5 +1,6 @@
 package org.mts.lab2.service;
 
+import org.mts.lab2.enums.AnimalEnum;
 import org.mts.lab2.inheritors.Cat;
 import org.mts.lab2.inheritors.Dog;
 import org.mts.lab2.inheritors.Wolf;
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class CreateAnimalServiceImpl implements CreateAnimalService{
 
-    private List<String> animalType;
+    private List<AnimalEnum> animalType;
 
     @Override
     public Animal[] createParticularNumberOfAnimals(int numberAnimals) {
@@ -36,32 +37,32 @@ public class CreateAnimalServiceImpl implements CreateAnimalService{
         return animals;
     }
 
-    public List<String> defineTypeOfAnimal() {
+    public List<AnimalEnum> defineTypeOfAnimal() {
         Animal[] animals = createAnimals();
-        List<String> types = new ArrayList<>(animals.length);
+        List<AnimalEnum> types = new ArrayList<>(animals.length);
 
         for (int i = 0; i < animals.length; i++) {
             if (animals[i] instanceof Cat){
-                types.add("Cat");
+                types.add(AnimalEnum.CAT);
             }
             else if (animals[i] instanceof Dog){
-                types.add("Dog");
+                types.add(AnimalEnum.DOG);
             }
             else if (animals[i] instanceof Wolf){
-                types.add("Wolf");
+                types.add(AnimalEnum.WOLF);
             }
             else {
-                types.add("Shark");
+                types.add(AnimalEnum.SHARK);
             }
         }
         return types;
     }
 
-    public List<String> getAnimalType() {
+    public List<AnimalEnum> getAnimalType() {
         return animalType;
     }
 
-    public void setAnimalType(List<String> animalType) {
+    public void setAnimalType(List<AnimalEnum> animalType) {
         this.animalType = animalType;
     }
 }

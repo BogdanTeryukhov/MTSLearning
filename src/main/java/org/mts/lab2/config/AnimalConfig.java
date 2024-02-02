@@ -23,10 +23,6 @@ public class AnimalConfig {
         return new CreateAnimalServiceImpl();
     }
 
-    @Bean
-    public DefaultCreationOfAnimalService defaultCreationOfAnimalService(){
-        return new DefaultCreationOfAnimalService();
-    }
 
     @Bean
     public BeanPostProcessorImpl myBeanPostProcessor() {
