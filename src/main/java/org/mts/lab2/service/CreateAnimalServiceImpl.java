@@ -3,8 +3,16 @@ package org.mts.lab2.service;
 import org.mts.lab2.interfaces.Animal;
 import org.mts.lab2.interfaces.CreateAnimalService;
 import org.mts.lab2.randomAnimalsCreation.RandomFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class CreateAnimalServiceImpl implements CreateAnimalService {
+@Component
+public class CreateAnimalServiceImpl implements CreateAnimalService{
+
+    public String AnimalType;
 
     @Override
     public Animal[] createParticularNumberOfAnimals(int numberAnimals) {
@@ -25,4 +33,5 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         } while (count < 10);
         return animals;
     }
+
 }
