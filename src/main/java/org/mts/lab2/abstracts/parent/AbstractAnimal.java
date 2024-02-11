@@ -1,11 +1,10 @@
 package org.mts.lab2.abstracts.parent;
 
-import org.mts.lab2.interfaces.Animal;
+import org.mts.lab2.service.Animal;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractAnimal implements Animal {
     protected String breed;

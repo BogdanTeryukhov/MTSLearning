@@ -1,23 +1,22 @@
 package org.mts.lab2.randomAnimalsCreation;
 
-import org.mts.lab2.interfaces.Animal;
-import org.mts.lab2.interfaces.RandomAnimalCreation;
+import org.mts.lab2.service.Animal;
+import org.mts.lab2.service.RandomAnimalCreation;
 import org.mts.lab2.randomAnimalsCreation.animalFactories.CatFactory;
-import org.mts.lab2.randomAnimalsCreation.animalFactories.DogFactory;
-import org.mts.lab2.randomAnimalsCreation.animalFactories.SharkFactory;
-import org.mts.lab2.randomAnimalsCreation.animalFactories.WolfFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+//import org.mts.lab2.randomAnimalsCreation.animalFactories.DogFactory;
+//import org.mts.lab2.randomAnimalsCreation.animalFactories.SharkFactory;
+//import org.mts.lab2.randomAnimalsCreation.animalFactories.WolfFactory;
 
-import java.util.Random;
 
+@Component
 public class RandomFactory implements RandomAnimalCreation {
     private RandomAnimalCreation[] factories;
 
-    public static final RandomFactory factory = new RandomFactory(new RandomAnimalCreation[]{
-            new CatFactory(),
-            new DogFactory(),
-            new SharkFactory(),
-            new WolfFactory()
-    });
+    @Autowired
+    private CatFactory catFactory;
+
 
     public RandomFactory(RandomAnimalCreation[] factories) {
         this.factories = factories;
@@ -26,8 +25,13 @@ public class RandomFactory implements RandomAnimalCreation {
 
     @Override
     public Animal createRandomAnimal() {
-        int ind = new Random().nextInt(getFactories().length);
-        return getFactories()[ind].createRandomAnimal();
+        //int ind = new Random().nextInt(getFactories().length);
+        int ind = 0;
+        switch (ind) {
+            case 0:
+                return catFactory.createRandomAnimal();
+        }
+        return null;
     }
 
 
