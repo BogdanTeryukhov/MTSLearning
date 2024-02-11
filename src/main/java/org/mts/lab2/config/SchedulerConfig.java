@@ -1,16 +1,13 @@
 package org.mts.lab2.config;
 
-import org.mts.lab2.interfaces.AnimalsRepository;
+import org.mts.lab2.service.AnimalsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
-@EnableScheduling
 public class SchedulerConfig {
 
     @Autowired

@@ -9,8 +9,7 @@ import org.mts.lab2.inheritors.Cat;
 import org.mts.lab2.inheritors.Dog;
 import org.mts.lab2.inheritors.Shark;
 import org.mts.lab2.inheritors.Wolf;
-import org.mts.lab2.interfaces.Animal;
-import org.mts.lab2.interfaces.SearchService;
+import org.mts.lab2.service.impl.SearchServiceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

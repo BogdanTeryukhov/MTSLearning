@@ -1,12 +1,11 @@
 package org.mts.lab2.randomAnimalsCreation.animalFactories;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.mts.lab2.inheritors.Cat;
-import org.mts.lab2.interfaces.Animal;
-import org.mts.lab2.interfaces.RandomAnimalCreation;
-import org.mts.lab2.interfaces.RandomChoice;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.mts.lab2.service.Animal;
+import org.mts.lab2.service.RandomAnimalCreation;
+import org.mts.lab2.service.RandomChoice;
+import org.mts.lab2.randomAnimalsCreation.AnimalProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,22 +13,18 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-@ConfigurationProperties(prefix = "animals")
-@EnableConfigurationProperties
 @Validated
+@RequiredArgsConstructor
 public class CatFactory implements RandomAnimalCreation, RandomChoice {
 
-    @NotNull
-    private List<String> catNames;
 
-    public List<String> getCatNames() {
-        return catNames;
-    }
+    private final AnimalProperties animalProperties;
 
     @Override
     public String getRandomAnimalName() {
-        System.out.println(catNames);
-        return getCatNames().get(new Random().nextInt(getCatNames().size()));
+        List<String> catsNames = animalProperties.getCatNames();
+        System.out.println(catsNames);
+        return catsNames.get(new Random().nextInt(catsNames.size()));
     }
 
     @Override
