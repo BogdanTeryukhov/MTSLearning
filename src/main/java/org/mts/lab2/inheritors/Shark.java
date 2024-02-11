@@ -11,8 +11,12 @@ public class Shark extends Predator {
     public Shark() {
     }
 
-    public Shark(LocalDate birth) {
-        super(birth);
+    public Shark(String name,LocalDate birth) {
+        super(name,birth);
+    }
+
+    public Shark(String randomAnimalName) {
+        this.name = randomAnimalName;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class Shark extends Predator {
 
     @Override
     public String getName() {
-        return "Акула из подводной братвы";
+        return name;
     }
 
     @Override

@@ -15,7 +15,8 @@ public abstract class Predator extends AbstractAnimal {
         birth = LocalDate.of(year, month, day);
     }
 
-    public Predator(LocalDate birth){
+    public Predator(String name,LocalDate birth){
+        this.name = name;
         this.birth = birth;
     }
 

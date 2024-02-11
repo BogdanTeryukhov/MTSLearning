@@ -11,8 +11,12 @@ public class Wolf extends Predator {
     public Wolf() {
     }
 
-    public Wolf(LocalDate birth) {
-        super(birth);
+    public Wolf(String name,LocalDate birth) {
+        super(name,birth);
+    }
+
+    public Wolf(String randomAnimalName) {
+        this.name = randomAnimalName;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class Wolf extends Predator {
 
     @Override
     public String getName() {
-        return "Волколак";
+        return name;
     }
 
     @Override

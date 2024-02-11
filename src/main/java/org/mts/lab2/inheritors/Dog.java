@@ -11,8 +11,12 @@ public class Dog extends Pet {
     public Dog() {
     }
 
-    public Dog(LocalDate birth) {
-        super(birth);
+    public Dog(String name, LocalDate birth) {
+        super(name,birth);
+    }
+
+    public Dog(String randomAnimalName) {
+        this.name = randomAnimalName;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class Dog extends Pet {
 
     @Override
     public String getName() {
-        return "Бобик";
+        return name;
     }
 
     @Override

@@ -18,29 +18,29 @@ public class AbstractAnimalTest {
 
     public static List<Animal> generateNotEqualsAnimals(){
         List<Animal> animalListNotEquals = new ArrayList<>();
-        animalListNotEquals.add(new Cat(LocalDate.of(2016, 10, 20)));
-        animalListNotEquals.add(new Dog(LocalDate.of(2016, 10, 20)));
-        animalListNotEquals.add(new Wolf(LocalDate.of(2016, 10, 20)));
-        animalListNotEquals.add(new Shark(LocalDate.of(2016, 10, 20)));
+        animalListNotEquals.add(new Cat("kit",LocalDate.of(2016, 10, 20)));
+        animalListNotEquals.add(new Dog("kit",LocalDate.of(2016, 10, 20)));
+        animalListNotEquals.add(new Wolf("kit",LocalDate.of(2016, 10, 20)));
+        animalListNotEquals.add(new Shark("kit",LocalDate.of(2016, 10, 20)));
 
-        animalListNotEquals.add(new Cat(LocalDate.of(2020, 10, 21)));
-        animalListNotEquals.add(new Dog(LocalDate.of(2020, 10, 21)));
-        animalListNotEquals.add(new Wolf(LocalDate.of(2020, 10, 21)));
-        animalListNotEquals.add(new Shark(LocalDate.of(2020, 10, 21)));
+        animalListNotEquals.add(new Cat("kit",LocalDate.of(2020, 10, 21)));
+        animalListNotEquals.add(new Dog("kit",LocalDate.of(2020, 10, 21)));
+        animalListNotEquals.add(new Wolf("kit",LocalDate.of(2020, 10, 21)));
+        animalListNotEquals.add(new Shark("kit",LocalDate.of(2020, 10, 21)));
         return animalListNotEquals;
     }
 
     public static List<Animal> generateEqualsAnimals(){
         List<Animal> animalListEquals = new ArrayList<>();
-        animalListEquals.add(new Cat(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Dog(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Wolf(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Shark(LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Cat("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Dog("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Wolf("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Shark("kit",LocalDate.of(2016, 10, 20)));
 
-        animalListEquals.add(new Cat(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Dog(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Wolf(LocalDate.of(2016, 10, 20)));
-        animalListEquals.add(new Shark(LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Cat("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Dog("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Wolf("kit",LocalDate.of(2016, 10, 20)));
+        animalListEquals.add(new Shark("kit",LocalDate.of(2016, 10, 20)));
         return animalListEquals;
     }
 

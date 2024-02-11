@@ -23,11 +23,11 @@ public class SearchServiceImplTest {
     @Test
     @DisplayName("Проверка работоспособности метода findLeapYearName()")
     public void findLeapYearNames() {
-        Cat cat = new Cat(LocalDate.of(2016, 10, 20));
-        Shark shark = new Shark(LocalDate.of(1904, 10, 20));
-        Wolf wolf = new Wolf(LocalDate.of(1905, 10, 20));
-        Dog dog = new Dog(LocalDate.of(2015, 10, 20));
-        Shark shark2 = new Shark(LocalDate.of(1920, 10, 20));
+        Cat cat = new Cat("kit",LocalDate.of(2016, 10, 20));
+        Shark shark = new Shark("kit",LocalDate.of(1904, 10, 20));
+        Wolf wolf = new Wolf("kit",LocalDate.of(1905, 10, 20));
+        Dog dog = new Dog("kit",LocalDate.of(2015, 10, 20));
+        Shark shark2 = new Shark("kit",LocalDate.of(1920, 10, 20));
 
         Animal[] animals = new Animal[]{cat, shark, wolf, dog, shark2};
         String[] leapYearAnimals_Equals = new String[]{new Cat().getName(), new Shark().getName(), new Shark().getName()};
@@ -40,13 +40,13 @@ public class SearchServiceImplTest {
     @Test
     @DisplayName("Проверка работоспособности метода findOlderAnimal()")
     public void findOlderAnimal() {
-        Cat cat = new Cat(LocalDate.of(2016, 10, 20));
-        Shark shark = new Shark(LocalDate.of(1904, 10, 20));
-        Wolf wolf = new Wolf(LocalDate.of(1905, 10, 20));
-        Dog dog = new Dog(LocalDate.of(2015, 10, 20));
-        Shark shark2 = new Shark(LocalDate.of(1920, 10, 20));
-        Wolf wolf2 = new Wolf(LocalDate.of(1950, 10, 20));
-        Dog dog2 = new Dog(LocalDate.of(2022, 5, 10));
+        Cat cat = new Cat("kit",LocalDate.of(2016, 10, 20));
+        Shark shark = new Shark("kit",LocalDate.of(1904, 10, 20));
+        Wolf wolf = new Wolf("kit",LocalDate.of(1905, 10, 20));
+        Dog dog = new Dog("kit",LocalDate.of(2015, 10, 20));
+        Shark shark2 = new Shark("kit",LocalDate.of(1920, 10, 20));
+        Wolf wolf2 = new Wolf("kit",LocalDate.of(1950, 10, 20));
+        Dog dog2 = new Dog("kit",LocalDate.of(2022, 5, 10));
 
         Animal[] animals = new Animal[]{cat, shark, wolf, dog, shark2, wolf2, dog2};
         Animal[] olderAnimals_Equals = new Animal[]{shark, wolf, shark2, wolf2};
@@ -62,7 +62,7 @@ public class SearchServiceImplTest {
     @DisplayName("Проверка работоспособности метода findDuplicate()")
     public void findDuplicate() {
         Animal[] animals = new Animal[]{
-                new Cat(LocalDate.of(2016, 10, 20)), new Wolf(), new Shark(), new Dog(), new Cat(LocalDate.of(2016, 10, 20))};
+                new Cat("kit",LocalDate.of(2016, 10, 20)), new Wolf(), new Shark(), new Dog(), new Cat("kit",LocalDate.of(2016, 10, 20))};
 
         List<List<Animal>> duplicatesList_Equals = new ArrayList<>();
         duplicatesList_Equals.add(List.of(animals[0], animals[4]));

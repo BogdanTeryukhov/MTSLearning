@@ -14,7 +14,8 @@ public abstract class Pet extends AbstractAnimal {
 
         birth = LocalDate.of(year, month, day);
     }
-    public Pet(LocalDate birth){
+    public Pet(String name, LocalDate birth){
+        this.name = name;
         this.birth = birth;
     }
 
