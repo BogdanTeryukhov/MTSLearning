@@ -25,7 +25,6 @@ public class RandomFactory implements RandomAnimalCreation {
     @Autowired
     private SharkFactory sharkFactory;
 
-
     @Override
     public Animal createRandomAnimal() {
         int ind = new Random().nextInt(4);

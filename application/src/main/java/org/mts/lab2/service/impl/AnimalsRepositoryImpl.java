@@ -1,9 +1,9 @@
 package org.mts.lab2.service.impl;
 
 import org.mts.lab2.service.AnimalsRepository;
+
 import org.mts.service.Animal;
 import org.mts.service.CreateAnimalService;
-import org.mts.service.CreateAnimalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 @Repository
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     public Animal[] animals;
-    private Logger logger = Logger.getLogger(AnimalsRepositoryImpl.class.getName());
+    private final Logger logger = Logger.getLogger(AnimalsRepositoryImpl.class.getName());
 
 
     @Autowired

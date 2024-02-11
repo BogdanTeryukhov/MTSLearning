@@ -1,7 +1,5 @@
 package org.mts.randomAnimalsCreation.animalFactories;
 
-import lombok.RequiredArgsConstructor;
-
 import org.mts.inheritors.Wolf;
 import org.mts.randomAnimalsCreation.AnimalProperties;
 import org.mts.service.Animal;
@@ -15,10 +13,13 @@ import java.util.Random;
 
 @Component
 @Validated
-@RequiredArgsConstructor
 public class WolfFactory implements RandomAnimalCreation, RandomChoice {
 
     private final AnimalProperties animalProperties;
+
+    public WolfFactory(AnimalProperties animalProperties) {
+        this.animalProperties = animalProperties;
+    }
 
     @Override
     public String getRandomAnimalName() {

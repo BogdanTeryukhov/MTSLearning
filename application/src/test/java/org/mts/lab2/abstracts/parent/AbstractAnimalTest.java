@@ -2,10 +2,12 @@ package org.mts.lab2.abstracts.parent;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.mts.lab2.inheritors.Cat;
-import org.mts.lab2.inheritors.Dog;
-import org.mts.lab2.inheritors.Shark;
-import org.mts.lab2.inheritors.Wolf;
+import org.mts.inheritors.Cat;
+import org.mts.inheritors.Dog;
+import org.mts.inheritors.Shark;
+import org.mts.inheritors.Wolf;
+import org.mts.service.Animal;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
