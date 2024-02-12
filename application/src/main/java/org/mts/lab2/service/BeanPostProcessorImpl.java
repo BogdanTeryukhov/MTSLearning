@@ -1,6 +1,6 @@
 package org.mts.lab2.service;
 
-import org.mts.service.CreateAnimalServiceImpl;
+import org.mts.service.impl.CreateAnimalServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;

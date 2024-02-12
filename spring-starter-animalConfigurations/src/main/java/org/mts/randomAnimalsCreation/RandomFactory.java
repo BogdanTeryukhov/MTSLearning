@@ -28,17 +28,21 @@ public class RandomFactory implements RandomAnimalCreation {
     @Override
     public Animal createRandomAnimal() {
         int ind = new Random().nextInt(4);
-        if (ind == 0){
-            return catFactory.createRandomAnimal();
+
+        switch (ind) {
+            case 0 -> {
+                return catFactory.createRandomAnimal();
+            }
+            case 1 -> {
+                return dogFactory.createRandomAnimal();
+            }
+            case 2 -> {
+                return wolfFactory.createRandomAnimal();
+            }
+            case 3 -> {
+                return sharkFactory.createRandomAnimal();
+            }
         }
-        else if (ind == 1){
-            return dogFactory.createRandomAnimal();
-        }
-        else if (ind == 2) {
-            return wolfFactory.createRandomAnimal();
-        }
-        else {
-            return sharkFactory.createRandomAnimal();
-        }
+        throw new RuntimeException();
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-@Validated
 public class WolfFactory implements RandomAnimalCreation, RandomChoice {
 
     private final AnimalProperties animalProperties;
