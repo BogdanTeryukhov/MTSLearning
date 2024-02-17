@@ -15,7 +15,6 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 class ApplicationTest {
 
     @Autowired

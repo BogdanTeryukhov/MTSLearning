@@ -37,7 +37,7 @@ class StarterTest {
     private AnimalProperties animalProperties;
 
     @Test
-    public void wolfFactoryTest(@Mock WolfFactory wolfFactory){
+    public void wolfFactoryTest(@Mock WolfFactory wolfFactory) {
         Mockito.doReturn(new Wolf()).when(wolfFactory).createRandomAnimal();
         Mockito.doReturn(animalProperties.getWolfNames().get(new Random().nextInt(5))).when(wolfFactory).getRandomAnimalName();
 
@@ -47,7 +47,7 @@ class StarterTest {
     }
 
     @Test
-    public void catFactoryTest(@Mock CatFactory catFactory){
+    public void catFactoryTest(@Mock CatFactory catFactory) {
         Mockito.doReturn(new Cat()).when(catFactory).createRandomAnimal();
         Mockito.doReturn(animalProperties.getCatNames().get(new Random().nextInt(5))).when(catFactory).getRandomAnimalName();
 
@@ -57,7 +57,7 @@ class StarterTest {
     }
 
     @Test
-    public void dogFactoryTest(@Mock DogFactory dogFactory){
+    public void dogFactoryTest(@Mock DogFactory dogFactory) {
         Mockito.doReturn(new Dog()).when(dogFactory).createRandomAnimal();
         Mockito.doReturn(animalProperties.getDogNames().get(new Random().nextInt(5))).when(dogFactory).getRandomAnimalName();
 
@@ -67,7 +67,7 @@ class StarterTest {
     }
 
     @Test
-    public void sharkFactoryTest(@Mock SharkFactory sharkFactory){
+    public void sharkFactoryTest(@Mock SharkFactory sharkFactory) {
         Mockito.doReturn(new Shark()).when(sharkFactory).createRandomAnimal();
         Mockito.doReturn(animalProperties.getSharkNames().get(new Random().nextInt(5))).when(sharkFactory).getRandomAnimalName();
 
@@ -76,7 +76,7 @@ class StarterTest {
                 && animalProperties.getSharkNames().contains(sharkFactory.getRandomAnimalName()));
     }
 
-    public List<String> findCurrentAnimalProperties(Animal animal){
+    private List<String> findCurrentAnimalProperties(Animal animal) {
         switch (animal.getClass().getName().substring(animal.getClass().getName().lastIndexOf('.') + 1)) {
             case "Cat" -> {
                 return animalProperties.getCatNames();
@@ -95,7 +95,7 @@ class StarterTest {
     }
 
     @Test
-    public void rightNamesTest(){
+    public void rightNamesTest() {
         Animal[] animals = createAnimalService.createAnimals();
         for (int i = 0; i < animals.length; i++) {
             List<String> currentAnimalProperty = findCurrentAnimalProperties(animals[i]);
@@ -104,13 +104,12 @@ class StarterTest {
     }
 
     @Test
-    public void rightDatesTest(){
+    public void rightDatesTest() {
         Animal[] animals = createAnimalService.createAnimals();
         for (int i = 0; i < animals.length; i++) {
-            if (animals[i] instanceof Pet){
+            if (animals[i] instanceof Pet) {
                 Assertions.assertTrue(animals[i].getDateOfBirth().getYear() >= 2010 && animals[i].getDateOfBirth().getYear() <= 2023);
-            }
-            else{
+            } else {
                 Assertions.assertTrue(animals[i].getDateOfBirth().getYear() >= 1800 && animals[i].getDateOfBirth().getYear() <= 2023);
             }
         }
