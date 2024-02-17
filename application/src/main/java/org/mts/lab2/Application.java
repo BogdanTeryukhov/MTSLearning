@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 @ComponentScan("org.mts")
 public class Application {
-
     public static void main(String[] args){
         SpringApplication.run(Application.class, args);
     }

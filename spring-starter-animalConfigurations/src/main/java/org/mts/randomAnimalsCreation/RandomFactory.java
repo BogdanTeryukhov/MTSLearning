@@ -15,7 +15,6 @@ import java.util.Random;
 
 @Component
 public class RandomFactory implements RandomAnimalCreation {
-
     @Autowired
     private CatFactory catFactory;
     @Autowired
