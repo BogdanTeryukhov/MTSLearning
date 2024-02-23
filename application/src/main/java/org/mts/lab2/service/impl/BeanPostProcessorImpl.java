@@ -1,4 +1,4 @@
-package org.mts.lab2.service;
+package org.mts.lab2.service.impl;
 
 import org.mts.service.impl.CreateAnimalServiceImpl;
 import org.springframework.beans.BeansException;

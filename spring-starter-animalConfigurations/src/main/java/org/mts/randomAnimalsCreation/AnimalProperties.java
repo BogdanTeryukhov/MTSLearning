@@ -2,7 +2,6 @@ package org.mts.randomAnimalsCreation;
 
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -52,5 +51,15 @@ public class AnimalProperties {
 
     public void setSharkNames(List<String> sharkNames) {
         this.sharkNames = sharkNames;
+    }
+
+    @Override
+    public String toString() {
+        return "AnimalProperties{" +
+                "catNames=" + catNames +
+                ", dogNames=" + dogNames +
+                ", wolfNames=" + wolfNames +
+                ", sharkNames=" + sharkNames +
+                '}';
     }
 }

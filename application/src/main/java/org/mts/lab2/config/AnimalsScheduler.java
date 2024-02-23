@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 @Component
 public class AnimalsScheduler {
-
     @Autowired
     private AnimalsRepository animalsRepository;
 

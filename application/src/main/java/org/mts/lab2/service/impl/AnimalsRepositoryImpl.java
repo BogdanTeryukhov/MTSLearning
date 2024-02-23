@@ -6,18 +6,19 @@ import org.mts.service.Animal;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 
-@Repository
+@Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     public Animal[] animals;
     private final Logger logger = Logger.getLogger(AnimalsRepositoryImpl.class.getName());
-
 
     @Autowired
     private CreateAnimalService createAnimalService;
@@ -25,6 +26,10 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     @PostConstruct
     private void postConstruct(){
         animals = createAnimalService.createAnimals();
+    }
+
+    public Animal[] getAnimals() {
+        return animals;
     }
 
     @Override
@@ -53,7 +58,6 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         if (number < 0){
             throw new IllegalArgumentException("Число должно быть больше 0");
         }
-
         int len = 0;
         for (int i = 0; i < animals.length; i++) {
             Animal currentAnimal = animals[i];

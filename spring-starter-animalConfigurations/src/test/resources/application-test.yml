@@ -1,0 +1,25 @@
+animals:
+  catNames:
+    - testBarsik
+    - testPersik
+    - testBobik
+    - testRurik
+    - testTangerine
+  dogNames:
+    - testVzhik
+    - testKnopa
+    - testGnom
+    - testZhuzha
+    - testFenya
+  wolfNames:
+    - testAtos
+    - testAfina
+    - testZeus
+    - testVelikan
+    - testWolfik
+  sharkNames:
+    - testMuhtar
+    - testPuma
+    - testWhiteShark
+    - testBullShark
+    - testRembo

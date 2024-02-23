@@ -42,7 +42,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
             animals[count] = randomFactory.createRandomAnimal();
             count++;
         } while (count < 10);
-        System.out.println(Arrays.toString(animals));
+        //System.out.println(Arrays.toString(animals));
         return animals;
     }
 

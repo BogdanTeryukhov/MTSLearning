@@ -23,7 +23,6 @@ public class WolfFactory implements RandomAnimalCreation, RandomChoice {
     @Override
     public String getRandomAnimalName() {
         List<String> wolvesNames = animalProperties.getWolfNames();
-        //System.out.println(wolvesNames);
         return wolvesNames.get(new Random().nextInt(wolvesNames.size()));
     }
 
