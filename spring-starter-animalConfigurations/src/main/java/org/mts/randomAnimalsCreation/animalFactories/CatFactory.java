@@ -23,7 +23,6 @@ public class CatFactory implements RandomAnimalCreation, RandomChoice {
     @Override
     public String getRandomAnimalName() {
         List<String> catsNames = animalProperties.getCatNames();
-        //System.out.println(catsNames);
         return catsNames.get(new Random().nextInt(catsNames.size()));
     }
 

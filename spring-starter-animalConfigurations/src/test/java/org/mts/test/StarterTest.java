@@ -22,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @SpringBootTest
@@ -96,21 +98,27 @@ class StarterTest {
 
     @Test
     public void rightNamesTest() {
-        Animal[] animals = createAnimalService.createAnimals();
-        for (int i = 0; i < animals.length; i++) {
-            List<String> currentAnimalProperty = findCurrentAnimalProperties(animals[i]);
-            Assertions.assertTrue(currentAnimalProperty.contains(animals[i].getName()));
+        Map<String, List<Animal>> animals = createAnimalService.createAnimals();
+        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
+            List<Animal> currentTypeAnimals = entry.getValue();
+            for (int i = 0; i < currentTypeAnimals.size(); i++) {
+                List<String> currentAnimalProperty = findCurrentAnimalProperties(currentTypeAnimals.get(i));
+                Assertions.assertTrue(currentAnimalProperty.contains(currentTypeAnimals.get(i).getName()));
+            }
         }
     }
 
     @Test
     public void rightDatesTest() {
-        Animal[] animals = createAnimalService.createAnimals();
-        for (int i = 0; i < animals.length; i++) {
-            if (animals[i] instanceof Pet) {
-                Assertions.assertTrue(animals[i].getDateOfBirth().getYear() >= 2010 && animals[i].getDateOfBirth().getYear() <= 2023);
-            } else {
-                Assertions.assertTrue(animals[i].getDateOfBirth().getYear() >= 1800 && animals[i].getDateOfBirth().getYear() <= 2023);
+        Map<String, List<Animal>> animals = createAnimalService.createAnimals();
+        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
+            List<Animal> currentTypeAnimals = entry.getValue();
+            for (int i = 0; i < currentTypeAnimals.size(); i++) {
+                if (currentTypeAnimals.get(i) instanceof Pet) {
+                    Assertions.assertTrue(currentTypeAnimals.get(i).getDateOfBirth().getYear() >= 2010 && currentTypeAnimals.get(i).getDateOfBirth().getYear() <= 2023);
+                } else {
+                    Assertions.assertTrue(currentTypeAnimals.get(i).getDateOfBirth().getYear() >= 1800 && currentTypeAnimals.get(i).getDateOfBirth().getYear() <= 2023);
+                }
             }
         }
     }

@@ -11,7 +11,6 @@ public class BeanPostProcessorImpl implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof CreateAnimalServiceImpl) {
             CreateAnimalServiceImpl animalService = (CreateAnimalServiceImpl) bean;
-            animalService.setAnimalType(animalService.defineTypeOfAnimal());
         }
         return bean;
     }
