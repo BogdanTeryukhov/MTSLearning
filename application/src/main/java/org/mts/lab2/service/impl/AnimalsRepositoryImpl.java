@@ -30,11 +30,6 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         animals = createAnimalService.createAnimals();
     }
 
-    //For tests
-    public void setAnimals(Map<String, List<Animal>> animals) {
-        this.animals = animals;
-    }
-
     public Map<String, List<Animal>> getAnimals() {
         return animals;
     }
@@ -45,9 +40,9 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         Map<String,LocalDate> map = new HashMap<>();
         for (Map.Entry<String, List<Animal>> entry: animals.entrySet()){
             List<Animal> currentTypeAnimals = entry.getValue();
-            for (int i = 0; i < currentTypeAnimals.size(); i++) {
-                if (currentTypeAnimals.get(i).getDateOfBirth().isLeapYear()){
-                    map.put(entry.getKey() + " " + currentTypeAnimals.get(i).getName(),currentTypeAnimals.get(i).getDateOfBirth());
+            for (Animal currentTypeAnimal : currentTypeAnimals) {
+                if (currentTypeAnimal.getDateOfBirth().isLeapYear()) {
+                    map.put(entry.getKey() + " " + currentTypeAnimal.getName(), currentTypeAnimal.getDateOfBirth());
                 }
             }
         }
@@ -67,13 +62,13 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         System.out.println("-----OlderAnimals-----");
         for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
             List<Animal> currentTypeAnimals = entry.getValue();
-            for (int i = 0; i < currentTypeAnimals.size(); i++) {
-                if (2024 - currentTypeAnimals.get(i).getDateOfBirth().getYear() > number){
-                    map.put(currentTypeAnimals.get(i), 2024 - currentTypeAnimals.get(i).getDateOfBirth().getYear());
+            for (Animal currentTypeAnimal : currentTypeAnimals) {
+                if (2024 - currentTypeAnimal.getDateOfBirth().getYear() > number) {
+                    map.put(currentTypeAnimal, 2024 - currentTypeAnimal.getDateOfBirth().getYear());
                 }
-                if (2024 - currentTypeAnimals.get(i).getDateOfBirth().getYear() > max){
-                    max = 2024 - currentTypeAnimals.get(i).getDateOfBirth().getYear();
-                    animal = currentTypeAnimals.get(i);
+                if (2024 - currentTypeAnimal.getDateOfBirth().getYear() > max) {
+                    max = 2024 - currentTypeAnimal.getDateOfBirth().getYear();
+                    animal = currentTypeAnimal;
                 }
             }
         }

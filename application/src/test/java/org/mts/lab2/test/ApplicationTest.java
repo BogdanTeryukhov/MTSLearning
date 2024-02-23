@@ -11,14 +11,12 @@ import org.mts.inheritors.Cat;
 import org.mts.inheritors.Dog;
 import org.mts.inheritors.Shark;
 import org.mts.inheritors.Wolf;
-import org.mts.lab2.service.AnimalsRepository;
 import org.mts.lab2.service.impl.AnimalsRepositoryImpl;
 import org.mts.randomAnimalsCreation.animalFactories.CatFactory;
 import org.mts.randomAnimalsCreation.animalFactories.DogFactory;
 import org.mts.randomAnimalsCreation.animalFactories.SharkFactory;
 import org.mts.randomAnimalsCreation.animalFactories.WolfFactory;
 import org.mts.service.Animal;
-import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,11 +38,11 @@ class ApplicationTest {
     public void findOlderAnimalsTest(@Mock CatFactory catFactory,
                                      @Mock DogFactory dogFactory,
                                      @Mock WolfFactory wolfFactory,
-                                     @Mock SharkFactory sharkFactory){
-        Mockito.doReturn(new Cat("testBarsik", LocalDate.of(2020, 2,25))).when(catFactory).createRandomAnimal();
-        Mockito.doReturn(new Dog("testVzhik", LocalDate.of(2015, 2,25))).when(dogFactory).createRandomAnimal();
-        Mockito.doReturn(new Wolf("testAtos", LocalDate.of(2019, 2,25))).when(wolfFactory).createRandomAnimal();
-        Mockito.doReturn(new Shark("testMuhtar", LocalDate.of(2016, 2,25))).when(sharkFactory).createRandomAnimal();
+                                     @Mock SharkFactory sharkFactory) {
+        Mockito.doReturn(new Cat("testBarsik", LocalDate.of(2020, 2, 25))).when(catFactory).createRandomAnimal();
+        Mockito.doReturn(new Dog("testVzhik", LocalDate.of(2015, 2, 25))).when(dogFactory).createRandomAnimal();
+        Mockito.doReturn(new Wolf("testAtos", LocalDate.of(2019, 2, 25))).when(wolfFactory).createRandomAnimal();
+        Mockito.doReturn(new Shark("testMuhtar", LocalDate.of(2016, 2, 25))).when(sharkFactory).createRandomAnimal();
 
         Map<String, List<Animal>> map = new HashMap<>();
         map.put(AnimalEnum.CAT.toString(), List.of(catFactory.createRandomAnimal()));
@@ -53,16 +51,16 @@ class ApplicationTest {
         map.put(AnimalEnum.SHARK.toString(), List.of(sharkFactory.createRandomAnimal()));
 
         AnimalsRepositoryImpl animalsRepositoryTest = new AnimalsRepositoryImpl();
-        animalsRepositoryTest.setAnimals(map);
+        animalsRepositoryTest.animals = map;
 
-        Map<Animal,Integer> resultMap = new HashMap<>();
-        resultMap.put(new Dog("testVzhik", LocalDate.of(2015, 2,25)), 9);
+        Map<Animal, Integer> resultMap = new HashMap<>();
+        resultMap.put(new Dog("testVzhik", LocalDate.of(2015, 2, 25)), 9);
         Assertions.assertEquals(animalsRepositoryTest.findOlderAnimal(10), resultMap);
     }
 
     @Test
     public void testNotNullAnimals() {
-        for (Map.Entry<String, List<Animal>> entry: animalsRepository.getAnimals().entrySet()) {
+        for (Map.Entry<String, List<Animal>> entry : animalsRepository.getAnimals().entrySet()) {
             List<Animal> currentTypeAnimals = entry.getValue();
             for (Animal currentTypeAnimal : currentTypeAnimals) {
                 Assertions.assertNotNull(currentTypeAnimal);
