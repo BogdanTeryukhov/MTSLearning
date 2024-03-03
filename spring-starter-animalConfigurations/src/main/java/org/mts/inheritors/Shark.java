@@ -5,6 +5,7 @@ import org.mts.abstracts.Predator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Shark extends Predator {
 
@@ -31,7 +32,7 @@ public class Shark extends Predator {
 
     @Override
     public BigDecimal getCost() {
-        return new BigDecimal(5550000);
+        return cost;
     }
 
     @Override

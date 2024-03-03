@@ -67,4 +67,36 @@ class ApplicationTest {
             }
         }
     }
+
+    @Test
+    public void findAverageAge() {
+        List<Animal> animalsList = List.of(new Cat("pete0", LocalDate.of(2015, 9, 20)),
+                new Cat("pete1", LocalDate.of(2010, 9, 20)),
+                new Cat("pete2", LocalDate.of(2014, 9, 20)));
+        System.out.println("\n------------AverageAge-----------\n");
+        animalsRepository.findAverageAge(animalsList);
+    }
+
+    @Test
+    public void findOldAndExpensive() {
+        List<Animal> animalsList = List.of(new Cat("pete0", LocalDate.of(2020, 9, 20)),
+                new Wolf("pete1", LocalDate.of(2011, 9, 19)),
+                new Wolf("pete2", LocalDate.of(2010, 9, 19)));
+        //animalsList.forEach(animal -> System.out.println("name: " + animal.getName() + " date: " + animal.getDateOfBirth() + " cost: " + animal.getCost().intValue()));
+        System.out.println("\n------------OldAndExpensive-----------\n");
+        System.out.println(animalsRepository.findOldAndExpensive(animalsList));
+    }
+
+    @Test
+    public void findMinCostAnimals() {
+        List<Animal> animalsList = List.of(new Cat("dior", LocalDate.of(2020, 9, 20)),
+                new Cat("diorb", LocalDate.of(2020, 9, 20)),
+                new Cat("diorc", LocalDate.of(2010, 5, 10)),
+                new Cat("diord", LocalDate.of(2015, 2, 15)),
+                new Wolf("pete4", LocalDate.of(2011, 9, 19)),
+                new Wolf("pete5", LocalDate.of(2010, 9, 19)));
+        System.out.println("\n------------MinCostAnimals-----------\n");
+        //animalsList.forEach(animal -> System.out.println("name: " + animal.getName() + " date: " + animal.getDateOfBirth() + " cost: " + animal.getCost().intValue()));
+        System.out.println(animalsRepository.findMinCostAnimals(animalsList));
+    }
 }

@@ -3,7 +3,9 @@ package org.mts.abstracts;
 
 import org.mts.abstracts.parent.AbstractAnimal;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Predator extends AbstractAnimal {
@@ -19,6 +21,7 @@ public abstract class Predator extends AbstractAnimal {
     public Predator(String name, LocalDate birth) {
         this.name = name;
         this.birth = birth;
+        cost = new BigDecimal(new Random().nextInt(9000,10000));
     }
 
     @Override
