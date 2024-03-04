@@ -10,7 +10,7 @@ import java.util.Map;
 public interface AnimalsRepository {
     Map<String, LocalDate> findLeapYearNames();
     Map<Animal,Integer> findOlderAnimal(int number);
-    Map<String, Integer> findDuplicate();
+    Map<String, List<Animal>> findDuplicate();
     void findAverageAge(List<Animal> animals);
     List<Animal> findOldAndExpensive(List<Animal> animals);
     List<String> findMinCostAnimals(List<Animal> animals);

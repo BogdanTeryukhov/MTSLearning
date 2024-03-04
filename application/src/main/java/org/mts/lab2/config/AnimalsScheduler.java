@@ -16,12 +16,8 @@ public class AnimalsScheduler {
 
     @Scheduled(fixedDelay = 60000L)
     public void doScheduled() {
-        for (Map.Entry<String, LocalDate> entry : animalsRepository.findLeapYearNames().entrySet()) {
-            System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
-        }
-        for (Map.Entry<Animal, Integer> entry : animalsRepository.findOlderAnimal(10).entrySet()) {
-            System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
-        }
-        animalsRepository.printDuplicates();
+        animalsRepository.findLeapYearNames().forEach((key,value) -> System.out.println("Key: " + key + " Date of birth: " + value));
+        animalsRepository.findOlderAnimal(10).forEach((key,value) -> System.out.println("Key: " + key + " Age: " + value));
+        animalsRepository.findDuplicate().forEach((key,value) -> System.out.println("Key: " + key + " AnimalsList: " + value));
     }
 }
