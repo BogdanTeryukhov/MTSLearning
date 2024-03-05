@@ -52,8 +52,11 @@ public class Dog extends Pet {
 
     @Override
     public String toString() {
-        return "Dog{" + "name=" + name
-                + " birth=" + birth +
+        return "Dog{" +
+                "breed='" + breed + '\'' +
+                ", name='" + name + '\'' +
+                ", character='" + character + '\'' +
+                ", birth=" + birth +
                 '}';
     }
 }
