@@ -119,45 +119,15 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 .stream()
                 .filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt((cost) -> cost.getCost().intValue()).average().getAsDouble())
                 .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > 5)
-                .sorted((o1, o2) -> {
-                    if (o1.getDateOfBirth().getYear() > o2.getDateOfBirth().getYear()){
-                        return 1;
-                    }
-                    else if (o1.getDateOfBirth().getYear() < o2.getDateOfBirth().getYear()){
-                        return -1;
-                    }
-                    else {
-                        if (o1.getDateOfBirth().getMonth().getValue() > o2.getDateOfBirth().getMonth().getValue()){
-                            return 1;
-                        }
-                        else if (o1.getDateOfBirth().getMonth().getValue() < o2.getDateOfBirth().getMonth().getValue()){
-                            return -1;
-                        }
-                        else{
-                            if (o1.getDateOfBirth().getDayOfMonth() > o2.getDateOfBirth().getDayOfMonth()){
-                                return 1;
-                            }
-                            else if (o1.getDateOfBirth().getDayOfMonth() < o2.getDateOfBirth().getDayOfMonth()){
-                                return -1;
-                            }
-                        }
-                    }
-                    return 0;
-                })
+                .sorted(Comparator.comparing(Animal::getDateOfBirth))
                 .toList();
     }
 
     @Override
     public List<String> findMinCostAnimals(List<Animal> animals) {
-        return animals.stream().sorted((o1, o2) -> {
-            if (o1.getCost().intValue() > o2.getCost().intValue()){
-                return 1;
-            }
-            else if (o1.getCost().intValue() < o2.getCost().intValue()) {
-                return -1;
-            }
-            return 0;
-        })
+        return animals
+                .stream()
+                .sorted(Comparator.comparing(Animal::getCost))
                 .limit(3)
                 .sorted((o1, o2) -> -o1.getName().compareTo(o2.getName()))
                 .map(Animal::getName)
