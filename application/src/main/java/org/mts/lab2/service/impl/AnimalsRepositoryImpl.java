@@ -23,7 +23,6 @@ import static java.util.stream.Collectors.*;
 @Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     public Map<String,List<Animal>> animals;
-    private final Logger logger = Logger.getLogger(AnimalsRepositoryImpl.class.getName());
 
     @Autowired
     private CreateAnimalService createAnimalService;
@@ -39,7 +38,6 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public Map<String, LocalDate> findLeapYearNames() {
-        System.out.println("-----LeapYearStream-----");
         Map<String, LocalDate> leapMap = animals
                 .values()
                 .stream()
@@ -47,7 +45,6 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 .filter(animal -> animal.getDateOfBirth().isLeapYear())
                 .collect(Collectors.toMap(animal -> animal.getClass().getSimpleName().toUpperCase() + " " + animal.getName(),
                         Animal::getDateOfBirth));
-        logger.info("method findLeapYearNames() invoked");
         return leapMap;
     }
 
@@ -56,20 +53,17 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         if (number < 0){
             throw new IllegalArgumentException("Число должно быть больше 0");
         }
-        System.out.println("---FindOlderAnimal----");
         Map<Animal,Integer> mapOptional = animals
                 .values()
                 .stream()
                 .flatMap(Collection::stream)
                 .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > number)
                 .collect(Collectors.toMap(animal -> animal, animalAge -> 2024 - animalAge.getDateOfBirth().getYear()));
-        logger.info("method findOlderAnimal() invoked");
         return mapOptional;
     }
 
     @Override
     public Map<String, List<Animal>> findDuplicate() {
-        System.out.println("Find duplicates");
         Map<String, List<Animal>> result = new HashMap<>();
         Map<Animal,Long> mapStream = animals
                 .values()
@@ -98,10 +92,8 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public void printDuplicates() {
-        System.out.println("-----Duplicates-----");
         Map<String,List<Animal>> map = findDuplicate();
         map.forEach((key,value) -> System.out.println("Key: " + key + " Value: " + value));
-        logger.info("method printDuplicates() invoked");
     }
 
     @Override
