@@ -1,21 +1,16 @@
 package org.mts.lab2.test;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mts.enums.AnimalEnum;
-import org.mts.inheritors.Cat;
-import org.mts.inheritors.Dog;
-import org.mts.inheritors.Shark;
-import org.mts.inheritors.Wolf;
+import org.mts.inheritors.*;
+import org.mts.lab2.exception.checked.InputListIsEmptyException;
+import org.mts.lab2.exception.unchecked.InputListLessThreeElemsException;
 import org.mts.lab2.service.impl.AnimalsRepositoryImpl;
-import org.mts.randomAnimalsCreation.animalFactories.CatFactory;
-import org.mts.randomAnimalsCreation.animalFactories.DogFactory;
-import org.mts.randomAnimalsCreation.animalFactories.SharkFactory;
-import org.mts.randomAnimalsCreation.animalFactories.WolfFactory;
+import org.mts.randomAnimalsCreation.animalFactories.*;
 import org.mts.service.Animal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,7 +74,12 @@ class AnimalsRepositoryImplTest {
                 new Cat("pete1", LocalDate.of(2010, 9, 20)),
                 new Cat("pete2", LocalDate.of(2014, 9, 20)));
         System.out.println("\n------------AverageAge-----------\n");
-        animalsRepository.findAverageAge(animalsList);
+        try {
+            animalsRepository.findAverageAge(animalsList);
+        } catch (InputListIsEmptyException exception){
+            System.out.println("Input list is empty!");
+        }
+
     }
 
     @Test
@@ -87,9 +87,13 @@ class AnimalsRepositoryImplTest {
         List<Animal> animalsList = List.of(new Cat("pete0", LocalDate.of(2020, 9, 20)),
                 new Wolf("pete1", LocalDate.of(2011, 9, 19)),
                 new Wolf("pete2", LocalDate.of(2010, 9, 19)));
-        //animalsList.forEach(animal -> System.out.println("name: " + animal.getName() + " date: " + animal.getDateOfBirth() + " cost: " + animal.getCost().intValue()));
         System.out.println("\n------------OldAndExpensive-----------\n");
-        System.out.println(animalsRepository.findOldAndExpensive(animalsList));
+        try {
+            System.out.println(animalsRepository.findOldAndExpensive(animalsList));
+        } catch (InputListIsEmptyException exception){
+            System.out.println("Input list is empty!");
+        }
+
     }
 
     @Test
@@ -101,8 +105,11 @@ class AnimalsRepositoryImplTest {
                 new Wolf("pete4", LocalDate.of(2011, 9, 19)),
                 new Wolf("pete5", LocalDate.of(2010, 9, 19)));
         System.out.println("\n------------MinCostAnimals-----------\n");
-        //animalsList.forEach(animal -> System.out.println("name: " + animal.getName() + " date: " + animal.getDateOfBirth() + " cost: " + animal.getCost().intValue()));
-        System.out.println(animalsRepository.findMinCostAnimals(animalsList));
+        try {
+            System.out.println(animalsRepository.findMinCostAnimals(animalsList));
+        } catch (InputListLessThreeElemsException exception){
+            System.out.println("Input list has less than 3 elements!");
+        }
     }
 
     @Test
