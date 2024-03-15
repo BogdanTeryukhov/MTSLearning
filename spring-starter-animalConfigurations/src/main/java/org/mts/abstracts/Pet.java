@@ -3,7 +3,9 @@ package org.mts.abstracts;
 
 import org.mts.abstracts.parent.AbstractAnimal;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Pet extends AbstractAnimal {
@@ -18,6 +20,7 @@ public abstract class Pet extends AbstractAnimal {
     public Pet(String name, LocalDate birth){
         this.name = name;
         this.birth = birth;
+        cost = new BigDecimal(new Random().nextInt(1000,2000));
     }
 
     @Override

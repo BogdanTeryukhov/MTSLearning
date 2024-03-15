@@ -9,18 +9,20 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 
 @Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     public Map<String,List<Animal>> animals;
-    private final Logger logger = Logger.getLogger(AnimalsRepositoryImpl.class.getName());
 
     @Autowired
     private CreateAnimalService createAnimalService;
@@ -36,18 +38,14 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public Map<String, LocalDate> findLeapYearNames() {
-        System.out.println("-----LeapYear-----");
-        Map<String,LocalDate> map = new HashMap<>();
-        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()){
-            List<Animal> currentTypeAnimals = entry.getValue();
-            for (Animal currentTypeAnimal : currentTypeAnimals) {
-                if (currentTypeAnimal.getDateOfBirth().isLeapYear()) {
-                    map.put(entry.getKey() + " " + currentTypeAnimal.getName(), currentTypeAnimal.getDateOfBirth());
-                }
-            }
-        }
-        logger.info("method findLeapYearNames() invoked");
-        return map;
+        Map<String, LocalDate> leapMap = animals
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(animal -> animal.getDateOfBirth().isLeapYear())
+                .collect(Collectors.toMap(animal -> animal.getClass().getSimpleName().toUpperCase() + " " + animal.getName(),
+                        Animal::getDateOfBirth));
+        return leapMap;
     }
 
     @Override
@@ -55,57 +53,76 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         if (number < 0){
             throw new IllegalArgumentException("Число должно быть больше 0");
         }
-        Map<Animal,Integer> map = new HashMap<>();
-        int max = 0;
-        Animal animal = null;
-
-        System.out.println("-----OlderAnimals-----");
-        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
-            List<Animal> currentTypeAnimals = entry.getValue();
-            for (Animal currentTypeAnimal : currentTypeAnimals) {
-                if (2024 - currentTypeAnimal.getDateOfBirth().getYear() > number) {
-                    map.put(currentTypeAnimal, 2024 - currentTypeAnimal.getDateOfBirth().getYear());
-                }
-                if (2024 - currentTypeAnimal.getDateOfBirth().getYear() > max) {
-                    max = 2024 - currentTypeAnimal.getDateOfBirth().getYear();
-                    animal = currentTypeAnimal;
-                }
-            }
-        }
-        if (map.isEmpty()){
-            map.put(animal, max);
-        }
-        logger.info("method findOlderAnimal() invoked");
-        return map;
+        Map<Animal,Integer> mapOptional = animals
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > number)
+                .collect(Collectors.toMap(animal -> animal, animalAge -> 2024 - animalAge.getDateOfBirth().getYear()));
+        return mapOptional;
     }
 
     @Override
-    public Map<String, Integer> findDuplicate() {
-        Map<String,Integer> map = new HashMap<>();
-        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
-            List<Animal> currentTypeAnimals = entry.getValue();
-            for (int i = 0; i < currentTypeAnimals.size() - 1; i++) {
-                if (!map.containsKey(entry.getKey())){
-                    map.put(entry.getKey(),0);
-                }
-                for (int j = i + 1; j < currentTypeAnimals.size(); j++) {
-                    if (currentTypeAnimals.get(i).equals(currentTypeAnimals.get(j))){
-                        map.computeIfPresent(entry.getKey(), (k,v) -> v + 1);
-                    }
-                }
+    public Map<String, List<Animal>> findDuplicate() {
+        Map<String, List<Animal>> result = new HashMap<>();
+        Map<Animal,Long> mapStream = animals
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(animalLongEntry -> animalLongEntry.getValue() > 1)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        mapStream.forEach((key, value) -> {
+            List<Animal> animalList = new ArrayList<>();
+            for (int i = 0; i < value; i++) {
+                animalList.add(key);
             }
-        }
-        return map;
+            if (result.containsKey(key.getClass().getSimpleName().toUpperCase())) {
+                result.get(key.getClass().getSimpleName().toUpperCase()).addAll(animalList);
+            } else {
+                result.put(key.getClass().getSimpleName().toUpperCase(), animalList);
+            }
+        });
+        //result.forEach((key,value) -> System.out.println("Key: " + key + " Value: " + value));
+        return result;
     }
 
     @Override
     public void printDuplicates() {
-        System.out.println("-----Duplicates-----");
-        Map<String,Integer> map = findDuplicate();
-        for (Map.Entry<String,Integer> entry : map.entrySet()) {
-            //String respond = String.format("Animal 1: %s : Animal 2: %s", duplicatedAnimal.get(0).toString(), duplicatedAnimal.get(1).toString());
-            System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
-        }
-        logger.info("method printDuplicates() invoked");
+        Map<String,List<Animal>> map = findDuplicate();
+        map.forEach((key,value) -> System.out.println("Key: " + key + " Value: " + value));
+    }
+
+    @Override
+    public void findAverageAge(List<Animal> animals) {
+        animals
+                .stream()
+                .mapToInt(age -> 2024 - age.getDateOfBirth().getYear())
+                .average().stream().forEach(System.out::println);
+    }
+
+    //.filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt(cost -> cost.getCost().intValue()).average().stream().sum())
+    @Override
+    public List<Animal> findOldAndExpensive(List<Animal> animals) {
+        return animals
+                .stream()
+                .filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt((cost) -> cost.getCost().intValue()).average().getAsDouble())
+                .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > 5)
+                .sorted(Comparator.comparing(Animal::getDateOfBirth))
+                .toList();
+    }
+
+    @Override
+    public List<String> findMinCostAnimals(List<Animal> animals) {
+        return animals
+                .stream()
+                .sorted(Comparator.comparing(Animal::getCost))
+                .limit(3)
+                .sorted((o1, o2) -> -o1.getName().compareTo(o2.getName()))
+                .map(Animal::getName)
+                .toList();
     }
 }

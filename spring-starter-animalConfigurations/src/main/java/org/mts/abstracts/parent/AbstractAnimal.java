@@ -24,14 +24,13 @@ public abstract class AbstractAnimal implements Animal {
         AbstractAnimal that = (AbstractAnimal) o;
         return Objects.equals(breed, that.breed)
                 && Objects.equals(name, that.name)
-                && Objects.equals(cost, that.cost)
                 && Objects.equals(character, that.character)
                 && Objects.equals(birth, that.birth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(breed, name, cost, character, birth);
+        return Objects.hash(breed, name, character, birth);
     }
 
     @Override

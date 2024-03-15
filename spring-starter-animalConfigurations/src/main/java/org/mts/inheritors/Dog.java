@@ -5,6 +5,7 @@ import org.mts.abstracts.Pet;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Dog extends Pet {
 
@@ -31,7 +32,7 @@ public class Dog extends Pet {
 
     @Override
     public BigDecimal getCost() {
-        return new BigDecimal(50000);
+        return cost;
     }
 
     @Override
@@ -51,8 +52,11 @@ public class Dog extends Pet {
 
     @Override
     public String toString() {
-        return "Dog{" + "name=" + name
-                + " birth=" + birth +
+        return "Dog{" +
+                "breed='" + breed + '\'' +
+                ", name='" + name + '\'' +
+                ", character='" + character + '\'' +
+                ", birth=" + birth +
                 '}';
     }
 }
