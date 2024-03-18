@@ -13,7 +13,7 @@ public class AnimalsScheduler {
     @Autowired
     private AnimalsRepository animalsRepository;
 
-    org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AnimalsScheduler.class);
+    private final Logger logger = Logger.getLogger(AnimalsScheduler.class.getName());
 
     @Scheduled(fixedDelay = 60000L)
     public void doScheduled() {
@@ -24,7 +24,7 @@ public class AnimalsScheduler {
 
         }
         catch (Exception exception){
-            logger.error("Something went wrong with method findLeapYearNames()");
+            logger.warning("Something went wrong with method findLeapYearNames()");
         }
 
         try {
@@ -33,7 +33,7 @@ public class AnimalsScheduler {
             logger.info("method findOlderAnimal() invoked");
         }
         catch (FindOlderAnimalsIllegalArgumentException exception){
-            logger.error("Input argument is illegal (less than 0)");
+            System.out.println("Input argument is illegal (less than 0)");
         }
 
         try {
@@ -42,7 +42,7 @@ public class AnimalsScheduler {
             logger.info("method findDuplicates() invoked");
         }
         catch (Exception exception){
-            logger.error("Something went wrong with method findDuplicates()");
+            System.out.println("Something went wrong with method findDuplicates()");
         }
     }
 }
