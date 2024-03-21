@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 @Scope("prototype")
@@ -26,8 +28,8 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     private RandomFactory randomFactory;
 
     @Override
-    public Map<String, List<Animal>> createAnimals() {
-        Map<String,List<Animal>> map = new HashMap<>();
+    public ConcurrentMap<String, List<Animal>> createAnimals() {
+        ConcurrentMap<String,List<Animal>> map = new ConcurrentHashMap<>();
         int count = 0;
         do {
             Animal animal = randomFactory.createRandomAnimal();
