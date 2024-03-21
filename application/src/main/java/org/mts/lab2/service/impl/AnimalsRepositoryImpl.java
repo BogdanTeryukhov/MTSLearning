@@ -1,7 +1,9 @@
 package org.mts.lab2.service.impl;
 
+import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
+import org.mts.lab2.exception.checked.InputListIsEmptyException;
+import org.mts.lab2.exception.unchecked.InputListLessThreeElemsException;
 import org.mts.lab2.service.AnimalsRepository;
-
 import org.mts.service.Animal;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +12,19 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.*;
 
 
 @Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
-    public Map<String,List<Animal>> animals;
+    public Map<String, List<Animal>> animals;
 
     @Autowired
     private CreateAnimalService createAnimalService;
 
     @PostConstruct
-    private void postConstruct(){
+    private void postConstruct() {
         animals = createAnimalService.createAnimals();
     }
 
@@ -50,10 +46,10 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public Map<Animal, Integer> findOlderAnimal(int number) {
-        if (number < 0){
-            throw new IllegalArgumentException("Число должно быть больше 0");
+        if (number < 0) {
+            throw new FindOlderAnimalsIllegalArgumentException();
         }
-        Map<Animal,Integer> mapOptional = animals
+        Map<Animal, Integer> mapOptional = animals
                 .values()
                 .stream()
                 .flatMap(Collection::stream)
@@ -65,11 +61,11 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     @Override
     public Map<String, List<Animal>> findDuplicate() {
         Map<String, List<Animal>> result = new HashMap<>();
-        Map<Animal,Long> mapStream = animals
+        Map<Animal, Long> mapStream = animals
                 .values()
                 .stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
                 .filter(animalLongEntry -> animalLongEntry.getValue() > 1)
@@ -92,21 +88,26 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public void printDuplicates() {
-        Map<String,List<Animal>> map = findDuplicate();
-        map.forEach((key,value) -> System.out.println("Key: " + key + " Value: " + value));
+        Map<String, List<Animal>> map = findDuplicate();
+        map.forEach((key, value) -> System.out.println("Key: " + key + " Value: " + value));
     }
 
     @Override
     public void findAverageAge(List<Animal> animals) {
+        if (animals.isEmpty()) {
+            throw new InputListIsEmptyException();
+        }
         animals
                 .stream()
                 .mapToInt(age -> 2024 - age.getDateOfBirth().getYear())
                 .average().stream().forEach(System.out::println);
     }
 
-    //.filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt(cost -> cost.getCost().intValue()).average().stream().sum())
     @Override
     public List<Animal> findOldAndExpensive(List<Animal> animals) {
+        if (animals.isEmpty()) {
+            throw new InputListIsEmptyException();
+        }
         return animals
                 .stream()
                 .filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt((cost) -> cost.getCost().intValue()).average().getAsDouble())
@@ -117,6 +118,9 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
 
     @Override
     public List<String> findMinCostAnimals(List<Animal> animals) {
+        if (animals.size() < 3){
+            throw new InputListLessThreeElemsException();
+        }
         return animals
                 .stream()
                 .sorted(Comparator.comparing(Animal::getCost))
