@@ -12,13 +12,16 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
 @Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
-    public Map<String, List<Animal>> animals;
+    public ConcurrentMap<String, List<Animal>> animals;
 
     @Autowired
     private CreateAnimalService createAnimalService;
@@ -33,7 +36,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     }
 
     @Override
-    public Map<String, LocalDate> findLeapYearNames() {
+    public ConcurrentMap<String, LocalDate> findLeapYearNames() {
         Map<String, LocalDate> leapMap = animals
                 .values()
                 .stream()
@@ -41,11 +44,12 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 .filter(animal -> animal.getDateOfBirth().isLeapYear())
                 .collect(Collectors.toMap(animal -> animal.getClass().getSimpleName().toUpperCase() + " " + animal.getName(),
                         Animal::getDateOfBirth));
-        return leapMap;
+        ConcurrentMap<String,LocalDate> concurrentMap = new ConcurrentHashMap<>(leapMap);
+        return concurrentMap;
     }
 
     @Override
-    public Map<Animal, Integer> findOlderAnimal(int number) {
+    public ConcurrentMap<Animal, Integer> findOlderAnimal(int number) {
         if (number < 0) {
             throw new FindOlderAnimalsIllegalArgumentException();
         }
@@ -55,12 +59,13 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 .flatMap(Collection::stream)
                 .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > number)
                 .collect(Collectors.toMap(animal -> animal, animalAge -> 2024 - animalAge.getDateOfBirth().getYear()));
-        return mapOptional;
+        ConcurrentMap<Animal,Integer> concurrentMap = new ConcurrentHashMap<>(mapOptional);
+        return concurrentMap;
     }
 
     @Override
-    public Map<String, List<Animal>> findDuplicate() {
-        Map<String, List<Animal>> result = new HashMap<>();
+    public ConcurrentMap<String, List<Animal>> findDuplicate() {
+        ConcurrentMap<String, List<Animal>> result = new ConcurrentHashMap<>();
         Map<Animal, Long> mapStream = animals
                 .values()
                 .stream()
@@ -82,18 +87,17 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 result.put(key.getClass().getSimpleName().toUpperCase(), animalList);
             }
         });
-        //result.forEach((key,value) -> System.out.println("Key: " + key + " Value: " + value));
         return result;
     }
 
     @Override
     public void printDuplicates() {
-        Map<String, List<Animal>> map = findDuplicate();
+        ConcurrentMap<String, List<Animal>> map = findDuplicate();
         map.forEach((key, value) -> System.out.println("Key: " + key + " Value: " + value));
     }
 
     @Override
-    public void findAverageAge(List<Animal> animals) {
+    public void findAverageAge(CopyOnWriteArrayList<Animal> animals) {
         if (animals.isEmpty()) {
             throw new InputListIsEmptyException();
         }
@@ -104,29 +108,32 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     }
 
     @Override
-    public List<Animal> findOldAndExpensive(List<Animal> animals) {
+    public CopyOnWriteArrayList<Animal> findOldAndExpensive(CopyOnWriteArrayList<Animal> animals) {
         if (animals.isEmpty()) {
             throw new InputListIsEmptyException();
         }
-        return animals
+        List<Animal> list = animals
                 .stream()
                 .filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt((cost) -> cost.getCost().intValue()).average().getAsDouble())
                 .filter(animal -> 2024 - animal.getDateOfBirth().getYear() > 5)
                 .sorted(Comparator.comparing(Animal::getDateOfBirth))
                 .toList();
+        CopyOnWriteArrayList<Animal> concurrentAnimal = new CopyOnWriteArrayList<>(list);
+        return concurrentAnimal;
     }
 
     @Override
-    public List<String> findMinCostAnimals(List<Animal> animals) {
+    public CopyOnWriteArrayList<String> findMinCostAnimals(CopyOnWriteArrayList<Animal> animals) {
         if (animals.size() < 3){
             throw new InputListLessThreeElemsException();
         }
-        return animals
+        List<String> list = animals
                 .stream()
                 .sorted(Comparator.comparing(Animal::getCost))
                 .limit(3)
                 .sorted((o1, o2) -> -o1.getName().compareTo(o2.getName()))
                 .map(Animal::getName)
                 .toList();
+        return new CopyOnWriteArrayList<>(list);
     }
 }
