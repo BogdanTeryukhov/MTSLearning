@@ -20,6 +20,15 @@ public class Dog extends Pet {
         this.name = randomAnimalName;
     }
 
+    public Dog(String randomAnimalName, String secretInfo) {
+        this.name = randomAnimalName;
+        this.secretInformation = secretInfo;
+    }
+
+    public Dog(String breed, String name, BigDecimal cost, String character, LocalDate birth, String secretInformation, int age) {
+        super(breed, name, cost, character, birth, secretInformation, age);
+    }
+
     @Override
     public String getBreed() {
         return "Собака";
@@ -46,6 +55,11 @@ public class Dog extends Pet {
     }
 
     @Override
+    public String getSecretInformation() {
+        return secretInformation;
+    }
+
+    @Override
     public boolean equals(Object o) {
         return super.equals(o);
     }
@@ -53,10 +67,10 @@ public class Dog extends Pet {
     @Override
     public String toString() {
         return "Dog{" +
-                "breed='" + breed + '\'' +
-                ", name='" + name + '\'' +
-                ", character='" + character + '\'' +
+                "name='" + name + '\'' +
                 ", birth=" + birth +
+                ", secretInformation='" + secretInformation + '\'' +
+                ", age=" + age +
                 '}';
     }
 }

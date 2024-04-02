@@ -23,7 +23,6 @@ public class DogFactory implements RandomAnimalCreation, RandomChoice {
     @Override
     public String getRandomAnimalName() {
         List<String> dogsNames = animalProperties.getDogNames();
-        //System.out.println(dogsNames);
         return dogsNames.get(new Random().nextInt(dogsNames.size()));
     }
 

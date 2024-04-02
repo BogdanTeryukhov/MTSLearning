@@ -2,6 +2,7 @@ package org.mts.abstracts.parent;
 
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.mts.service.Animal;
 
 import java.math.BigDecimal;
@@ -14,6 +15,61 @@ public abstract class AbstractAnimal implements Animal {
     protected BigDecimal cost;
     protected String character;
     protected LocalDate birth;
+    protected String secretInformation;
+    protected int age;
+
+    public AbstractAnimal() {
+    }
+
+    public AbstractAnimal(String breed, String name, BigDecimal cost, String character, LocalDate birth, String secretInformation, int age) {
+        this.breed = breed;
+        this.name = name;
+        this.cost = cost;
+        this.character = character;
+        this.birth = birth;
+        this.secretInformation = secretInformation;
+        this.age = age;
+    }
+
+    @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
+    @Override
+    public void setCharacter(String character) {
+        this.character = character;
+    }
+
+    @Override
+    public void setBirth(LocalDate birth) {
+        this.birth = birth;
+    }
+
+    @Override
+    public void setSecretInformation(String secretInformation) {
+        this.secretInformation = secretInformation;
+    }
+
+    @Override
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -33,6 +89,7 @@ public abstract class AbstractAnimal implements Animal {
         return Objects.hash(breed, name, character, birth);
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return "AbstractAnimal{" +
