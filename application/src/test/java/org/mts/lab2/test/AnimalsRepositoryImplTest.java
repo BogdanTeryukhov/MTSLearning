@@ -1,16 +1,24 @@
 package org.mts.lab2.test;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mts.abstracts.parent.AbstractAnimal;
 import org.mts.enums.AnimalEnum;
-import org.mts.inheritors.*;
+import org.mts.inheritors.Cat;
+import org.mts.inheritors.Dog;
+import org.mts.inheritors.Shark;
+import org.mts.inheritors.Wolf;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
 import org.mts.lab2.exception.unchecked.InputListLessThreeElemsException;
 import org.mts.lab2.service.impl.AnimalsRepositoryImpl;
-import org.mts.randomAnimalsCreation.animalFactories.*;
+import org.mts.randomAnimalsCreation.animalFactories.CatFactory;
+import org.mts.randomAnimalsCreation.animalFactories.DogFactory;
+import org.mts.randomAnimalsCreation.animalFactories.SharkFactory;
+import org.mts.randomAnimalsCreation.animalFactories.WolfFactory;
 import org.mts.service.Animal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +50,7 @@ class AnimalsRepositoryImplTest {
         Mockito.doReturn(new Wolf("testAtos", LocalDate.of(2019, 2, 25))).when(wolfFactory).createRandomAnimal();
         Mockito.doReturn(new Shark("testMuhtar", LocalDate.of(2016, 2, 25))).when(sharkFactory).createRandomAnimal();
 
-        ConcurrentMap<String, List<Animal>> map = new ConcurrentHashMap<>();
+        ConcurrentMap<String, List<AbstractAnimal>> map = new ConcurrentHashMap<>();
         map.put(AnimalEnum.CAT.toString(), List.of(catFactory.createRandomAnimal()));
         map.put(AnimalEnum.DOG.toString(), List.of(dogFactory.createRandomAnimal()));
         map.put(AnimalEnum.WOLF.toString(), List.of(wolfFactory.createRandomAnimal()));
@@ -63,8 +71,8 @@ class AnimalsRepositoryImplTest {
 
     @Test
     public void testNotNullAnimals() {
-        for (Map.Entry<String, List<Animal>> entry : animalsRepository.getAnimals().entrySet()) {
-            List<Animal> currentTypeAnimals = entry.getValue();
+        for (Map.Entry<String, List<AbstractAnimal>> entry : animalsRepository.getAnimals().entrySet()) {
+            List<AbstractAnimal> currentTypeAnimals = entry.getValue();
             for (Animal currentTypeAnimal : currentTypeAnimals) {
                 Assertions.assertNotNull(currentTypeAnimal);
             }
@@ -73,14 +81,14 @@ class AnimalsRepositoryImplTest {
 
     @Test
     public void findAverageAge() {
-        List<Animal> animalsList = List.of(new Cat("pete0", LocalDate.of(2015, 9, 20)),
+        List<AbstractAnimal> animalsList = List.of(new Cat("pete0", LocalDate.of(2015, 9, 20)),
                 new Cat("pete1", LocalDate.of(2010, 9, 20)),
                 new Cat("pete2", LocalDate.of(2014, 9, 20)));
-        CopyOnWriteArrayList<Animal> concurrentAnimalsList = new CopyOnWriteArrayList<>(animalsList);
+        CopyOnWriteArrayList<AbstractAnimal> concurrentAnimalsList = new CopyOnWriteArrayList<>(animalsList);
         System.out.println("\n------------AverageAge-----------\n");
         try {
             animalsRepository.findAverageAge(concurrentAnimalsList);
-        } catch (InputListIsEmptyException exception){
+        } catch (InputListIsEmptyException exception) {
             System.out.println("Input list is empty!");
         }
 
@@ -88,14 +96,14 @@ class AnimalsRepositoryImplTest {
 
     @Test
     public void findOldAndExpensive() {
-        List<Animal> animalsList = List.of(new Cat("pete0", LocalDate.of(2020, 9, 20)),
+        List<AbstractAnimal> animalsList = List.of(new Cat("pete0", LocalDate.of(2020, 9, 20)),
                 new Wolf("pete1", LocalDate.of(2011, 9, 19)),
                 new Wolf("pete2", LocalDate.of(2010, 9, 19)));
-        CopyOnWriteArrayList<Animal> concurrentAnimalsList = new CopyOnWriteArrayList<>(animalsList);
+        CopyOnWriteArrayList<AbstractAnimal> concurrentAnimalsList = new CopyOnWriteArrayList<>(animalsList);
         System.out.println("\n------------OldAndExpensive-----------\n");
         try {
             System.out.println(animalsRepository.findOldAndExpensive(concurrentAnimalsList));
-        } catch (InputListIsEmptyException exception){
+        } catch (InputListIsEmptyException exception) {
             System.out.println("Input list is empty!");
         }
 
@@ -103,7 +111,7 @@ class AnimalsRepositoryImplTest {
 
     @Test
     public void findMinCostAnimals() {
-        CopyOnWriteArrayList<Animal> animals = new CopyOnWriteArrayList<>(new Animal[]{(new Cat("dior", LocalDate.of(2020, 9, 20))),
+        CopyOnWriteArrayList<AbstractAnimal> animals = new CopyOnWriteArrayList<>(new AbstractAnimal[]{(new Cat("dior", LocalDate.of(2020, 9, 20))),
                 new Cat("diorb", LocalDate.of(2020, 9, 20)),
                 new Cat("diorc", LocalDate.of(2010, 5, 10)),
                 new Cat("diord", LocalDate.of(2015, 2, 15)),
@@ -112,7 +120,7 @@ class AnimalsRepositoryImplTest {
         System.out.println("\n------------MinCostAnimals-----------\n");
         try {
             System.out.println(animalsRepository.findMinCostAnimals(animals));
-        } catch (InputListLessThreeElemsException exception){
+        } catch (InputListLessThreeElemsException exception) {
             System.out.println("Input list has less than 3 elements!");
         }
     }
@@ -127,7 +135,7 @@ class AnimalsRepositoryImplTest {
         Mockito.doReturn(new Wolf("testAtos", LocalDate.of(2019, 2, 25))).when(wolfFactory).createRandomAnimal();
         Mockito.doReturn(new Shark("testMuhtar", LocalDate.of(2016, 2, 25))).when(sharkFactory).createRandomAnimal();
 
-        ConcurrentMap<String, List<Animal>> map = new ConcurrentHashMap<>();
+        ConcurrentMap<String, List<AbstractAnimal>> map = new ConcurrentHashMap<>();
         map.put(AnimalEnum.CAT.toString(), List.of(catFactory.createRandomAnimal(), catFactory.createRandomAnimal(), catFactory.createRandomAnimal()));
         map.put(AnimalEnum.DOG.toString(), List.of(dogFactory.createRandomAnimal(), dogFactory.createRandomAnimal()));
         map.put(AnimalEnum.WOLF.toString(), List.of(wolfFactory.createRandomAnimal()));
