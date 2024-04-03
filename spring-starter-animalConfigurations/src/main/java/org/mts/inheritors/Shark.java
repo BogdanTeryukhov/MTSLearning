@@ -39,4 +39,13 @@ public class Shark extends Predator {
     }
 
 
+    @Override
+    public String toString() {
+        return "Shark{" +
+                "name='" + name + '\'' +
+                ", birth=" + birth +
+                ", secretInformation='" + secretInformation + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

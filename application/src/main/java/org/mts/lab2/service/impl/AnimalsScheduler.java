@@ -17,13 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component
 public class AnimalsScheduler implements Serializable {
@@ -71,6 +69,7 @@ public class AnimalsScheduler implements Serializable {
     @Scheduled(fixedDelay = 60000L)
     public void doScheduled() {
         CopyOnWriteArrayList<AbstractAnimal> concurrentAnimalsList = setUpTestArrayList();
+        getInfoFromFiles();
         try {
             logger.info("LeapYearStream");
             animalsRepository.findLeapYearNames().forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
@@ -107,7 +106,6 @@ public class AnimalsScheduler implements Serializable {
         } catch (Exception exception) {
             logger.error("Something went wrong with method findMinCostAnimals()");
         }
-        getInfoFromFiles();
     }
 
 
@@ -117,18 +115,30 @@ public class AnimalsScheduler implements Serializable {
         if (folder.isDirectory()) {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 File currentFile = new File(file.getAbsoluteFile().toURI());
+                logger.info("file " + file.getName() + " reading processing");
                 try {
-                    if (file.getName().equals("findLeapYearNames.json")) {
-                        Map<String, LocalDate> map = objectMapper.readValue(currentFile, new TypeReference<>() {
-                        });
-                        map.forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
-                    }
-                    //HERE IS ERROR
-                    else if (file.getName().equals("findOlderAnimal.json")) {
-                        List<AbstractAnimal> animals = objectMapper.readValue(currentFile, new TypeReference<>() {
-                        });
-                        for (AbstractAnimal animal : animals) {
-                            System.out.println(objectMapper.writeValueAsString(animal));
+                    switch (file.getName()) {
+                        case "findLeapYearNames.json" -> {
+                            Map<String, LocalDate> map = objectMapper.readValue(currentFile, new TypeReference<>() {
+                            });
+                            map.forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
+                        }
+                        case "findOlderAnimal.json", "findOldAndExpensive.json" -> {
+                            List<AbstractAnimal> animals = objectMapper.readValue(currentFile, new TypeReference<>() {
+                            });
+                            decodeListInfo(animals);
+                            animals.forEach(System.out::println);
+                        }
+                        case "findMinCostAnimals.json" -> {
+                            List<String> names = objectMapper.readValue(currentFile, new TypeReference<>() {
+                            });
+                            names.forEach(System.out::println);
+                        }
+                        case "findDuplicate.json" -> {
+                            ConcurrentMap<String, List<AbstractAnimal>> finalResult = objectMapper.readValue(currentFile, new TypeReference<>() {
+                            });
+                            decodeMapInfo(finalResult);
+                            finalResult.forEach((key, value) -> System.out.println("Key: " + key + " Animals List: " + value));
                         }
                     }
                 } catch (IOException e) {
@@ -136,5 +146,13 @@ public class AnimalsScheduler implements Serializable {
                 }
             }
         }
+    }
+
+    public static void decodeListInfo(List<AbstractAnimal> animals) {
+        animals.forEach((animal) -> animal.setSecretInformation(new String(Base64.getDecoder().decode(animal.getSecretInformation()))));
+    }
+
+    public static <K> void decodeMapInfo(ConcurrentMap<K, List<AbstractAnimal>> map) {
+        map.forEach((key, value) -> value.forEach(elem -> elem.setSecretInformation(new String(Base64.getDecoder().decode(elem.getSecretInformation())))));
     }
 }

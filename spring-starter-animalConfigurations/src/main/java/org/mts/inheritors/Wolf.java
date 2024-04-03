@@ -38,5 +38,13 @@ public class Wolf extends Predator {
         return "Характеристика волка";
     }
 
-
+    @Override
+    public String toString() {
+        return "Wolf{" +
+                "name='" + name + '\'' +
+                ", birth=" + birth +
+                ", secretInformation='" + secretInformation + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

@@ -39,4 +39,13 @@ public class Cat extends Pet {
         return "Характеристика кошки";
     }
 
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "name='" + name + '\'' +
+                ", birth=" + birth +
+                ", secretInformation='" + secretInformation + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }
