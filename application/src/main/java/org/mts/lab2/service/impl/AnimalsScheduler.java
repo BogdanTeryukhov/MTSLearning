@@ -119,24 +119,24 @@ public class AnimalsScheduler implements Serializable {
                 try {
                     switch (file.getName()) {
                         case "findLeapYearNames.json" -> {
-                            Map<String, LocalDate> map = objectMapper.readValue(currentFile, new TypeReference<>() {
-                            });
+                            Map<String, LocalDate> map =
+                                    objectMapper.readValue(currentFile, new TypeReference<>() {});
                             map.forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
                         }
                         case "findOlderAnimal.json", "findOldAndExpensive.json" -> {
-                            List<AbstractAnimal> animals = objectMapper.readValue(currentFile, new TypeReference<>() {
-                            });
+                            List<AbstractAnimal> animals =
+                                    objectMapper.readValue(currentFile, new TypeReference<>() {});
                             decodeListInfo(animals);
                             animals.forEach(System.out::println);
                         }
                         case "findMinCostAnimals.json" -> {
-                            List<String> names = objectMapper.readValue(currentFile, new TypeReference<>() {
-                            });
+                            List<String> names =
+                                    objectMapper.readValue(currentFile, new TypeReference<>() {});
                             names.forEach(System.out::println);
                         }
                         case "findDuplicate.json" -> {
-                            ConcurrentMap<String, List<AbstractAnimal>> finalResult = objectMapper.readValue(currentFile, new TypeReference<>() {
-                            });
+                            ConcurrentMap<String, List<AbstractAnimal>> finalResult =
+                                    objectMapper.readValue(currentFile, new TypeReference<>() {});
                             decodeMapInfo(finalResult);
                             finalResult.forEach((key, value) -> System.out.println("Key: " + key + " Animals List: " + value));
                         }
