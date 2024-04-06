@@ -5,7 +5,6 @@ import org.mts.abstracts.Pet;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Random;
 
 public class Dog extends Pet {
 
@@ -13,11 +12,20 @@ public class Dog extends Pet {
     }
 
     public Dog(String name, LocalDate birth) {
-        super(name,birth);
+        super(name, birth);
     }
 
     public Dog(String randomAnimalName) {
         this.name = randomAnimalName;
+    }
+
+    public Dog(String randomAnimalName, String secretInfo) {
+        this.name = randomAnimalName;
+        this.secretInformation = secretInfo;
+    }
+
+    public Dog(String breed, String name, BigDecimal cost, String character, LocalDate birth, String secretInformation, int age) {
+        super(breed, name, cost, character, birth, secretInformation, age);
     }
 
     @Override
@@ -26,37 +34,18 @@ public class Dog extends Pet {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    @Override
     public String getCharacter() {
         return "Характеристика собаки";
     }
 
-    @Override
-    public LocalDate getDateOfBirth() {
-        return birth;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
 
     @Override
     public String toString() {
         return "Dog{" +
-                "breed='" + breed + '\'' +
-                ", name='" + name + '\'' +
-                ", character='" + character + '\'' +
+                "name='" + name + '\'' +
                 ", birth=" + birth +
+                ", secretInformation='" + secretInformation + '\'' +
+                ", age=" + age +
                 '}';
     }
 }

@@ -1,16 +1,19 @@
 package org.mts.service;
 
 
-import org.springframework.stereotype.Repository;
+import org.mts.abstracts.parent.AbstractAnimal;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 public interface CreateAnimalService {
 
-    ConcurrentMap<String, List<Animal>> createAnimals();
+    ConcurrentMap<String, List<AbstractAnimal>> createAnimals();
 
-    String defineTypeOfCurrentAnimal(Animal animal);
+    String defineTypeOfCurrentAnimal(AbstractAnimal animal);
+
+    String defineSecretInformation(AbstractAnimal animal);
+
+    void writeAnimalToFile(AbstractAnimal animal);
 
 }

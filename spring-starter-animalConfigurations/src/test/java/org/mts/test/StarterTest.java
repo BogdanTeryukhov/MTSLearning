@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mts.abstracts.Pet;
+import org.mts.abstracts.parent.AbstractAnimal;
 import org.mts.inheritors.Cat;
 import org.mts.inheritors.Dog;
 import org.mts.inheritors.Shark;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -98,9 +98,9 @@ class StarterTest {
 
     @Test
     public void rightNamesTest() {
-        Map<String, List<Animal>> animals = createAnimalService.createAnimals();
-        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
-            List<Animal> currentTypeAnimals = entry.getValue();
+        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
+        for (Map.Entry<String, List<AbstractAnimal>> entry : animals.entrySet()) {
+            List<AbstractAnimal> currentTypeAnimals = entry.getValue();
             for (int i = 0; i < currentTypeAnimals.size(); i++) {
                 List<String> currentAnimalProperty = findCurrentAnimalProperties(currentTypeAnimals.get(i));
                 Assertions.assertTrue(currentAnimalProperty.contains(currentTypeAnimals.get(i).getName()));
@@ -110,14 +110,14 @@ class StarterTest {
 
     @Test
     public void rightDatesTest() {
-        Map<String, List<Animal>> animals = createAnimalService.createAnimals();
-        for (Map.Entry<String, List<Animal>> entry: animals.entrySet()) {
-            List<Animal> currentTypeAnimals = entry.getValue();
+        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
+        for (Map.Entry<String, List<AbstractAnimal>> entry : animals.entrySet()) {
+            List<AbstractAnimal> currentTypeAnimals = entry.getValue();
             for (int i = 0; i < currentTypeAnimals.size(); i++) {
                 if (currentTypeAnimals.get(i) instanceof Pet) {
-                    Assertions.assertTrue(currentTypeAnimals.get(i).getDateOfBirth().getYear() >= 2010 && currentTypeAnimals.get(i).getDateOfBirth().getYear() <= 2023);
+                    Assertions.assertTrue(((Pet) currentTypeAnimals.get(i)).getBirth().getYear() >= 2010 && currentTypeAnimals.get(i).getBirth().getYear() <= 2023);
                 } else {
-                    Assertions.assertTrue(currentTypeAnimals.get(i).getDateOfBirth().getYear() >= 1800 && currentTypeAnimals.get(i).getDateOfBirth().getYear() <= 2023);
+                    Assertions.assertTrue(currentTypeAnimals.get(i).getBirth().getYear() >= 1800 && currentTypeAnimals.get(i).getBirth().getYear() <= 2023);
                 }
             }
         }

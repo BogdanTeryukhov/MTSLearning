@@ -24,6 +24,10 @@ public abstract class Predator extends AbstractAnimal {
         cost = new BigDecimal(new Random().nextInt(9000,10000));
     }
 
+    public Predator(String breed, String name, BigDecimal cost, String character, LocalDate birth, String secretInformation, int age) {
+        super(breed, name, cost, character, birth, secretInformation, age);
+    }
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

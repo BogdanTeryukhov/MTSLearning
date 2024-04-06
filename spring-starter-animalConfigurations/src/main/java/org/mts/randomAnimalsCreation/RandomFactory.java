@@ -1,11 +1,11 @@
 package org.mts.randomAnimalsCreation;
 
 
+import org.mts.abstracts.parent.AbstractAnimal;
 import org.mts.randomAnimalsCreation.animalFactories.CatFactory;
 import org.mts.randomAnimalsCreation.animalFactories.DogFactory;
 import org.mts.randomAnimalsCreation.animalFactories.SharkFactory;
 import org.mts.randomAnimalsCreation.animalFactories.WolfFactory;
-import org.mts.service.Animal;
 import org.mts.service.RandomAnimalCreation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class RandomFactory implements RandomAnimalCreation {
     private SharkFactory sharkFactory;
 
     @Override
-    public Animal createRandomAnimal() {
+    public AbstractAnimal createRandomAnimal() {
         int ind = new Random().nextInt(4);
 
         switch (ind) {
