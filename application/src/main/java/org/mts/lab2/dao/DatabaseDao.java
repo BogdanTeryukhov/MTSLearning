@@ -11,7 +11,7 @@ import java.util.Objects;
 @Repository
 public class DatabaseDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public DatabaseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -23,11 +23,5 @@ public class DatabaseDao {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    public PreparedStatement prepare(Connection connection, String table) throws SQLException {
-        return connection.prepareStatement(
-                "SELECT * FROM animals." + table
-        );
     }
 }

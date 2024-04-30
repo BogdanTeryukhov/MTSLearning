@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
@@ -15,6 +16,7 @@ public class Creature implements Serializable {
     private Long id;
     @Column(name = "name")
     private String name;
+
     @Column(name = "type_id", insertable = false, updatable = false)
     private int typeId;
     @Column(name = "age")
@@ -26,6 +28,13 @@ public class Creature implements Serializable {
     private AnimalType type;
 
     public Creature() {
+    }
+
+    public Creature(String name, int typeId, short age, AnimalType type) {
+        this.name = name;
+        this.typeId = typeId;
+        this.age = age;
+        this.type = type;
     }
 
     public Creature(String name, int typeId, AnimalType type) {
@@ -96,6 +105,19 @@ public class Creature implements Serializable {
 
     public void setAge(short age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Creature creature = (Creature) o;
+        return typeId == creature.typeId && age == creature.age && Objects.equals(name, creature.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, typeId, age);
     }
 
     @Override

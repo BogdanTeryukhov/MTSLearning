@@ -28,7 +28,7 @@ public class DatabaseScheduler {
 
         Connection connection = databaseDao.getConnection();
         //AnimalType
-        PreparedStatement stmt1 = databaseDao.prepare(connection, "animal_type");
+        PreparedStatement stmt1 = connection.prepareStatement("SELECT * FROM animals.animal_type");
         List<AnimalType> animalTypeList = new ArrayList<>();
         ResultSet resultSet1 = stmt1.executeQuery();
         while (resultSet1.next()) {
@@ -42,7 +42,7 @@ public class DatabaseScheduler {
         System.out.println(animalTypeList);
 
         //Habitat
-        PreparedStatement stmt4 = databaseDao.prepare(connection, "habitat");
+        PreparedStatement stmt4 = connection.prepareStatement("SELECT * FROM animals.habitat");
         List<Habitat> habitatList = new ArrayList<>();
         ResultSet resultSet4 = stmt4.executeQuery();
         while (resultSet4.next()) {
@@ -55,7 +55,7 @@ public class DatabaseScheduler {
         System.out.println(habitatList);
 
         //AnimalsHabitats
-        PreparedStatement stmt2 = databaseDao.prepare(connection, "animals_habitats");
+        PreparedStatement stmt2 = connection.prepareStatement("SELECT * FROM animals.animals_habitats");
         List<AnimalsHabitats> animalsHabitatsList = new ArrayList<>();
         ResultSet resultSet2 = stmt2.executeQuery();
         while (resultSet2.next()) {
@@ -68,7 +68,7 @@ public class DatabaseScheduler {
         System.out.println(animalsHabitatsList);
 
         //Creature
-        PreparedStatement stmt3 = databaseDao.prepare(connection, "creature");
+        PreparedStatement stmt3 = connection.prepareStatement("SELECT * FROM animals.creature");
         List<Creature> creatureList = new ArrayList<>();
         ResultSet resultSet3 = stmt3.executeQuery();
         while (resultSet3.next()) {
@@ -84,7 +84,7 @@ public class DatabaseScheduler {
         System.out.println(creatureList);
 
         //Provider
-        PreparedStatement stmt5 = databaseDao.prepare(connection, "provider");
+        PreparedStatement stmt5 = connection.prepareStatement("SELECT * FROM animals.provider");
         List<Provider> providerList = new ArrayList<>();
         ResultSet resultSet5 = stmt5.executeQuery();
         while (resultSet5.next()) {
@@ -98,7 +98,7 @@ public class DatabaseScheduler {
         System.out.println(providerList);
 
         //AnimalsProviders
-        PreparedStatement stmt6 = databaseDao.prepare(connection, "animals_providers");
+        PreparedStatement stmt6 = connection.prepareStatement("SELECT * FROM animals.animals_providers");
         List<AnimalsProviders> animalsProvidersList = new ArrayList<>();
         ResultSet resultSet6 = stmt6.executeQuery();
         while (resultSet6.next()) {

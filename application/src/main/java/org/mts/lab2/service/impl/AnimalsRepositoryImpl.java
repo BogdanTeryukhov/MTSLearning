@@ -5,7 +5,6 @@ import org.mts.dao.CreatureDao;
 import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
-import org.mts.lab2.exception.unchecked.InputListLessThreeElemsException;
 import org.mts.lab2.service.AnimalsRepository;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,8 +38,10 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     @Autowired
     private CreatureDao creatureDao;
 
+    private List<Creature> creatures;
+
     @PostConstruct
-    private void postConstruct(){
+    private void postConstruct() {
         createAnimalService.createAnimals();
     }
 

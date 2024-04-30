@@ -1,6 +1,5 @@
 package org.mts.lab2.entity;
 
-
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
