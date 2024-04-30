@@ -1,0 +1,25 @@
+animals:
+  catNames:
+    - barsik
+    - persik
+    - bobik
+    - rurik
+    - tangerine
+  dogNames:
+    - vzhik
+    - knopa
+    - gnom
+    - zhuzha
+    - fenya
+  wolfNames:
+    - atos
+    - afina
+    - zeus
+    - velikan
+    - wolfik
+  sharkNames:
+    - muhtar
+    - puma
+    - whiteShark
+    - bullShark
+    - rembo
