@@ -31,11 +31,12 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
         return list;
     }
 
-    public T create(final T entity) {
+    public T save(final T entity) {
         Preconditions.checkNotNull(entity, null);
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
-        currentSession.saveOrUpdate(entity);
+        currentSession.save(entity);
+        currentSession.getTransaction().commit();
         currentSession.close();
         return entity;
     }
@@ -45,6 +46,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
         T merge = currentSession.merge(entity);
+        currentSession.getTransaction().commit();
         currentSession.close();
         return (T) merge;
     }

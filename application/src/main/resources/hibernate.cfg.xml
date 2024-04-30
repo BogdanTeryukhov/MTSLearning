@@ -22,7 +22,7 @@
         <property name="current_session_context_class">thread</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
 
         <!-- dbcp connection pool configuration -->
         <property name="hibernate.dbcp.initialSize">10</property>
@@ -35,5 +35,7 @@
         <mapping class="org.mts.lab2.entity.AnimalsProviders"/>
         <mapping class="org.mts.lab2.entity.Habitat"/>
         <mapping class="org.mts.lab2.entity.Provider"/>
+        <mapping class="org.mts.entity.AnimalType"></mapping>
+        <mapping class="org.mts.entity.Creature"></mapping>
     </session-factory>
 </hibernate-configuration>

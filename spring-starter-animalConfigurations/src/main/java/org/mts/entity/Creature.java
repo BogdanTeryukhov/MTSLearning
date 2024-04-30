@@ -1,5 +1,6 @@
 package org.mts.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -7,9 +8,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @Table(name = "creature", schema = "animals")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Creature implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "name")
     private String name;
@@ -103,6 +105,8 @@ public class Creature implements Serializable {
                 ", name='" + name + '\'' +
                 ", typeId=" + typeId +
                 ", age=" + age +
+                ", secretInfo='" + secretInfo + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package org.mts.service.impl;
 
+import org.mts.dao.CreatureDao;
 import org.mts.entity.Creature;
 import org.mts.randomAnimalsCreation.RandomFactory;
 import org.mts.service.CreateAnimalService;
@@ -23,24 +24,20 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     @Autowired
     private RandomFactory randomFactory;
 
+    @Autowired
+    private CreatureDao creatureDao;
+
     @Override
-    public ConcurrentMap<String, List<Creature>> createAnimals() {
-        ConcurrentMap<String, List<Creature>> map = new ConcurrentHashMap<>();
+    public void createAnimals() {
         int count = 0;
         do {
             Creature creature = randomFactory.createRandomAnimal();
             creature.setSecretInfo(defineSecretInformation(creature));
 
+            creatureDao.save(creature);
             writeAnimalToFile(creature);
-
-            if (!map.containsKey(creature.getType().getType())) {
-                map.put(creature.getType().getType(), new ArrayList<>());
-            }
-            map.get(creature.getType().getType()).add(creature);
             count++;
         } while (count < 10);
-
-        return map;
     }
 
     @Override

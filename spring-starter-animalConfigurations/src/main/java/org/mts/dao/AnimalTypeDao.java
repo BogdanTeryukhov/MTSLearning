@@ -16,7 +16,7 @@ public class AnimalTypeDao extends AbstractHibernateDao<AnimalType> {
     public List<AnimalType> findAll() {
         Session session = getCurrentSession();
         session.beginTransaction();
-        List<AnimalType> list = session.createQuery("from animals.animal_type", AnimalType.class).list();
+        List<AnimalType> list = session.createQuery("from AnimalType", AnimalType.class).list();
         session.close();
         return list;
     }

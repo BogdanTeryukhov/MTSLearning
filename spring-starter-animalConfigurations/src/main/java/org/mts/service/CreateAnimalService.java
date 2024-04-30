@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public interface CreateAnimalService {
 
-    ConcurrentMap<String, List<Creature>> createAnimals();
+    void createAnimals();
 
     String defineSecretInformation(Creature creature);
 

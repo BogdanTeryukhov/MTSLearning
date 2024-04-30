@@ -19,7 +19,7 @@ public class AnimalType implements Serializable {
     @Column(name = "is_wild")
     private boolean isWild;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "creature_id")
     private List<Creature> creatures;
 
@@ -69,5 +69,15 @@ public class AnimalType implements Serializable {
 
     public void setCreatures(List<Creature> creatures) {
         this.creatures = creatures;
+    }
+
+    @Override
+    public String toString() {
+        return "AnimalType{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", isWild=" + isWild +
+                ", creatures=" + creatures +
+                '}';
     }
 }
