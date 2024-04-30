@@ -38,6 +38,8 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     @Autowired
     private CreatureDao creatureDao;
 
+    private List<Creature> creatures;
+
     @PostConstruct
     private void postConstruct() {
         createAnimalService.createAnimals();

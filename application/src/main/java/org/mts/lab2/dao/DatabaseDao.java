@@ -24,10 +24,4 @@ public class DatabaseDao {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-    public PreparedStatement prepare(Connection connection, String table) throws SQLException {
-        return connection.prepareStatement(
-                "SELECT * FROM animals." + table
-        );
-    }
 }
