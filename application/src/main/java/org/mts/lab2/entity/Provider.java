@@ -3,9 +3,12 @@ package org.mts.lab2.entity;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "provider", schema = "animals")
-public class Provider {
+public class Provider implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
