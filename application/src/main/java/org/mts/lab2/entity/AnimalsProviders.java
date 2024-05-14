@@ -1,10 +1,15 @@
 package org.mts.lab2.entity;
 
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
-@Component
+@Entity
+@Table(name = "animals_providers", schema = "animals")
 public class AnimalsProviders {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAnimalType;
+    @Column(name = "id_provider")
     private Long idProvider;
 
     public AnimalsProviders() {

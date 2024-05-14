@@ -1,11 +1,7 @@
 package org.mts.service.impl;
 
-import org.mts.abstracts.parent.AbstractAnimal;
-import org.mts.enums.AnimalEnum;
-import org.mts.inheritors.Cat;
-import org.mts.inheritors.Dog;
-import org.mts.inheritors.Shark;
-import org.mts.inheritors.Wolf;
+import org.mts.dao.CreatureDao;
+import org.mts.entity.Creature;
 import org.mts.randomAnimalsCreation.RandomFactory;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,57 +24,38 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     @Autowired
     private RandomFactory randomFactory;
 
+    @Autowired
+    private CreatureDao creatureDao;
+
     @Override
-    public ConcurrentMap<String, List<AbstractAnimal>> createAnimals() {
-        ConcurrentMap<String, List<AbstractAnimal>> map = new ConcurrentHashMap<>();
+    public void createAnimals() {
         int count = 0;
         do {
-            AbstractAnimal animal = randomFactory.createRandomAnimal();
-            String type = new CreateAnimalServiceImpl().defineTypeOfCurrentAnimal(animal);
-            animal.setSecretInformation(defineSecretInformation(animal));
+            Creature creature = randomFactory.createRandomAnimal();
+            creature.setSecretInfo(defineSecretInformation(creature));
 
-            writeAnimalToFile(animal);
-
-            if (!map.containsKey(type)) {
-                map.put(type, new ArrayList<>());
-            }
-            map.get(type).add(animal);
+            creatureDao.save(creature);
+            writeAnimalToFile(creature);
             count++;
         } while (count < 10);
-
-        return map;
     }
 
     @Override
-    public String defineTypeOfCurrentAnimal(AbstractAnimal animal) {
-        if (animal instanceof Cat) {
-            return AnimalEnum.CAT.toString();
-        } else if (animal instanceof Dog) {
-            return AnimalEnum.DOG.toString();
-        } else if (animal instanceof Wolf) {
-            return AnimalEnum.WOLF.toString();
-        } else if (animal instanceof Shark) {
-            return AnimalEnum.SHARK.toString();
-        }
-        throw new RuntimeException("Illegal type");
-    }
-
-    @Override
-    public String defineSecretInformation(AbstractAnimal animal) {
+    public String defineSecretInformation(Creature creature) {
         try {
             File file = new File("spring-starter-animalConfigurations\\src\\main\\resources\\secretStore\\secretInformation.txt");
             List<String> secretInfoList = Files.readAllLines(file.getAbsoluteFile().toPath());
-            switch (animal.getBreed()) {
-                case "Кошка" -> {
+            switch (creature.getType().getType()) {
+                case "cat" -> {
                     return secretInfoList.stream().filter(str -> str.matches("^Кошки:.*$")).toList().get(0);
                 }
-                case "Собака" -> {
+                case "dog" -> {
                     return secretInfoList.stream().filter(str -> str.matches("^Собаки:.*$")).toList().get(0);
                 }
-                case "Акула" -> {
+                case "shark" -> {
                     return secretInfoList.stream().filter(str -> str.matches("^Акулы:.*$")).toList().get(0);
                 }
-                case "Волк" -> {
+                case "wolf" -> {
                     return secretInfoList.stream().filter(str -> str.matches("^Волки:.*$")).toList().get(0);
                 }
                 default -> throw new RuntimeException("No animal has been found");
@@ -90,7 +67,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     }
 
     @Override
-    public void writeAnimalToFile(AbstractAnimal animal) {
+    public void writeAnimalToFile(Creature creature) {
         try {
             File file = new File("spring-starter-animalConfigurations\\src\\main\\resources\\animals\\logData.txt");
             List<String> animalsInfoList = Files.readAllLines(file.getAbsoluteFile().toPath());
@@ -103,7 +80,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
             }
 
             String animalInfo = String.format("%d %s %s %s\n",
-                    animalNumID, animal.getBreed(), animal.getName(), animal.getBirth().toString());
+                    animalNumID, creature.getAge(), creature.getName(), creature.getType().getType());
 
             Files.write(file.toPath(), animalInfo.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {

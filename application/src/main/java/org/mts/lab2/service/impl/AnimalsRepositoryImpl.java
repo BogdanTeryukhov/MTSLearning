@@ -1,10 +1,10 @@
 package org.mts.lab2.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mts.abstracts.parent.AbstractAnimal;
+import org.mts.dao.CreatureDao;
+import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
-import org.mts.lab2.exception.unchecked.InputListLessThreeElemsException;
 import org.mts.lab2.service.AnimalsRepository;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,65 +29,61 @@ import java.util.stream.Collectors;
 @Service
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     private static final String path = "application/src/main/resources/results/";
-    public ConcurrentMap<String, List<AbstractAnimal>> animals;
-
     @Autowired
     private CreateAnimalService createAnimalService;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private CreatureDao creatureDao;
+
+    private List<Creature> creatures;
+
     @PostConstruct
     private void postConstruct() {
-        animals = createAnimalService.createAnimals();
-    }
-
-    public Map<String, List<AbstractAnimal>> getAnimals() {
-        return animals;
+        createAnimalService.createAnimals();
     }
 
     @Override
-    public ConcurrentMap<String, LocalDate> findLeapYearNames() {
-        Map<String, LocalDate> leapMap = animals
-                .values()
+    public ConcurrentMap<String, Short> findLeapYearNames() {
+        List<Creature> creatures = creatureDao.findAll();
+        Map<String, Short> leapMap = creatures
                 .stream()
-                .flatMap(Collection::stream)
-                .filter(animal -> animal.getBirth().isLeapYear())
-                .collect(Collectors.toMap(animal -> animal.getClass().getSimpleName().toUpperCase() + " " + animal.getName(),
-                        AbstractAnimal::getBirth));
+                .filter(creature -> (LocalDate.now().getYear() - creature.getAge() % 400 == 0) ||
+                        ((LocalDate.now().getYear() - creature.getAge()) % 100 != 0 && (LocalDate.now().getYear() - creature.getAge()) % 4 == 0))
+                .collect(Collectors.toMap(creature -> creature.getType().getType() + " " + creature.getName(),
+                        Creature::getAge));
 
-        ConcurrentMap<String, LocalDate> concurrentMap = new ConcurrentHashMap<>(leapMap);
+        ConcurrentMap<String, Short> concurrentMap = new ConcurrentHashMap<>(leapMap);
+
         informationToFile("findLeapYearNames.json", concurrentMap);
         return concurrentMap;
     }
 
     @Override
-    public ConcurrentMap<AbstractAnimal, Integer> findOlderAnimal(int number) {
+    public CopyOnWriteArrayList<Creature> findOlderAnimal(int number) {
         if (number < 0) {
             throw new FindOlderAnimalsIllegalArgumentException();
         }
-        Map<AbstractAnimal, Integer> mapOptional = animals
-                .values()
+        List<Creature> creatures = creatureDao
+                .findAll()
                 .stream()
-                .flatMap(Collection::stream)
-                .filter(animal -> LocalDate.now().getYear() - animal.getBirth().getYear() > number)
-                .collect(Collectors.toMap(animal -> animal, animalAge -> LocalDate.now().getYear() - animalAge.getBirth().getYear()));
-        mapOptional.forEach(AbstractAnimal::setAge);
+                .filter(creature -> creature.getAge() > number)
+                .toList();
 
-        CopyOnWriteArrayList<AbstractAnimal> animalList = new CopyOnWriteArrayList<>(mapOptional.keySet().stream().toList());
-        animalList = listEncoding(animalList);
-        informationToFile("findOlderAnimal.json", animalList);
-        ConcurrentMap<AbstractAnimal, Integer> concurrentMap = new ConcurrentHashMap<>(mapOptional);
-        return concurrentMap;
+        CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>(creatures);
+        creatureList = listEncoding(creatureList);
+        informationToFile("findOlderAnimal.json", creatureList);
+        return creatureList;
     }
 
     @Override
-    public ConcurrentMap<String, List<AbstractAnimal>> findDuplicate() {
-        ConcurrentMap<String, List<AbstractAnimal>> result = new ConcurrentHashMap<>();
-        Map<AbstractAnimal, Long> mapStream = animals
-                .values()
+    public ConcurrentMap<String, List<Creature>> findDuplicate() {
+        ConcurrentMap<String, List<Creature>> result = new ConcurrentHashMap<>();
+        List<Creature> creatures = creatureDao.findAll();
+        Map<Creature, Long> mapStream = creatures
                 .stream()
-                .flatMap(Collection::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -97,73 +91,37 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         mapStream.forEach((key, value) -> {
-            List<AbstractAnimal> animalList = new ArrayList<>();
+            List<Creature> creatureList = new ArrayList<>();
             for (int i = 0; i < value; i++) {
-                animalList.add(key);
+                creatureList.add(key);
             }
             if (result.containsKey(key.getClass().getSimpleName().toUpperCase())) {
-                result.get(key.getClass().getSimpleName().toUpperCase()).addAll(animalList);
+                result.get(key.getClass().getSimpleName().toUpperCase()).addAll(creatureList);
             } else {
-                result.put(key.getClass().getSimpleName().toUpperCase(), animalList);
+                result.put(key.getClass().getSimpleName().toUpperCase(), creatureList);
             }
         });
 
-        ConcurrentMap<String, List<AbstractAnimal>> finalResult = listMapEncoding(result);
+        ConcurrentMap<String, List<Creature>> finalResult = listMapEncoding(result);
         informationToFile("findDuplicate.json", finalResult);
         return result;
     }
 
     @Override
     public void printDuplicates() {
-        ConcurrentMap<String, List<AbstractAnimal>> map = findDuplicate();
+        ConcurrentMap<String, List<Creature>> map = findDuplicate();
         map.forEach((key, value) -> System.out.println("Key: " + key + " Value: " + value));
     }
 
     @Override
-    public void findAverageAge(CopyOnWriteArrayList<AbstractAnimal> animals) {
+    public void findAverageAge(CopyOnWriteArrayList<Creature> animals) {
         if (animals.isEmpty()) {
             throw new InputListIsEmptyException();
         }
         animals
                 .stream()
-                .mapToInt(age -> LocalDate.now().getYear() - age.getBirth().getYear())
+                .mapToInt(Creature::getAge)
                 .average().stream().forEach(System.out::println);
-    }
-
-    @Override
-    public CopyOnWriteArrayList<AbstractAnimal> findOldAndExpensive(CopyOnWriteArrayList<AbstractAnimal> animals) {
-        if (animals.isEmpty()) {
-            throw new InputListIsEmptyException();
-        }
-        List<AbstractAnimal> list = animals
-                .stream()
-                .filter(animal -> animal.getCost().intValue() > animals.stream().mapToInt((cost) -> cost.getCost().intValue()).average().getAsDouble())
-                .filter(animal -> LocalDate.now().getYear() - animal.getBirth().getYear() > 5)
-                .sorted(Comparator.comparing(AbstractAnimal::getBirth))
-                .toList();
-        CopyOnWriteArrayList<AbstractAnimal> concurrentAnimal = new CopyOnWriteArrayList<>(list);
-        //Encoding
-        concurrentAnimal = listEncoding(concurrentAnimal);
-        informationToFile("findOldAndExpensive.json", concurrentAnimal);
-        return concurrentAnimal;
-    }
-
-    @Override
-    public CopyOnWriteArrayList<String> findMinCostAnimals(CopyOnWriteArrayList<AbstractAnimal> animals) {
-        if (animals.size() < 3) {
-            throw new InputListLessThreeElemsException();
-        }
-        List<String> list = animals
-                .stream()
-                .sorted(Comparator.comparing(AbstractAnimal::getCost))
-                .limit(3)
-                .sorted((o1, o2) -> -o1.getName().compareTo(o2.getName()))
-                .map(AbstractAnimal::getName)
-                .toList();
-        //"findMinCostAnimals.json"
-        CopyOnWriteArrayList<String> res = new CopyOnWriteArrayList<>(list);
-        informationToFile("findMinCostAnimals.json", res);
-        return new CopyOnWriteArrayList<>(list);
     }
 
     private <K, V> void informationToFile(String filename, ConcurrentMap<K, V> finalResult) {
@@ -192,33 +150,33 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         }
     }
 
-    private static ConcurrentMap<String, List<AbstractAnimal>> listMapEncoding(ConcurrentMap<String, List<AbstractAnimal>> concurrentMap) {
-        for (Map.Entry<String, List<AbstractAnimal>> entry : concurrentMap.entrySet()) {
-            for (AbstractAnimal currentAnimal : entry.getValue()) {
+    private static ConcurrentMap<String, List<Creature>> listMapEncoding(ConcurrentMap<String, List<Creature>> concurrentMap) {
+        for (Map.Entry<String, List<Creature>> entry : concurrentMap.entrySet()) {
+            for (Creature currentAnimal : entry.getValue()) {
                 String encodedString =
-                        Base64.getEncoder().withoutPadding().encodeToString(currentAnimal.getSecretInformation().getBytes());
-                currentAnimal.setSecretInformation(encodedString);
+                        Base64.getEncoder().withoutPadding().encodeToString(currentAnimal.getSecretInfo().getBytes());
+                currentAnimal.setSecretInfo(encodedString);
             }
         }
         return concurrentMap;
     }
 
-    private static ConcurrentMap<AbstractAnimal, Integer> mapEncoding(ConcurrentMap<AbstractAnimal, Integer> concurrentMap) {
-        for (Map.Entry<AbstractAnimal, Integer> entry : concurrentMap.entrySet()) {
+    private static ConcurrentMap<Creature, Integer> mapEncoding(ConcurrentMap<Creature, Integer> concurrentMap) {
+        for (Map.Entry<Creature, Integer> entry : concurrentMap.entrySet()) {
             String encodedString =
-                    Base64.getEncoder().withoutPadding().encodeToString(entry.getKey().getSecretInformation().getBytes());
-            entry.getKey().setSecretInformation(encodedString);
+                    Base64.getEncoder().withoutPadding().encodeToString(entry.getKey().getSecretInfo().getBytes());
+            entry.getKey().setSecretInfo(encodedString);
         }
         return concurrentMap;
     }
 
-    private static CopyOnWriteArrayList<AbstractAnimal> listEncoding(CopyOnWriteArrayList<AbstractAnimal> animals) {
+    private static CopyOnWriteArrayList<Creature> listEncoding(CopyOnWriteArrayList<Creature> animals) {
         //Encoding
-        for (AbstractAnimal currentAnimal : animals) {
-            String secretInfo = currentAnimal.getSecretInformation() == null ? "no secret info" : currentAnimal.getSecretInformation();
+        for (Creature currentAnimal : animals) {
+            String secretInfo = currentAnimal.getSecretInfo() == null ? "no secret info" : currentAnimal.getSecretInfo();
             String encodedString =
                     Base64.getEncoder().withoutPadding().encodeToString(secretInfo.getBytes());
-            currentAnimal.setSecretInformation(encodedString);
+            currentAnimal.setSecretInfo(encodedString);
         }
         return animals;
     }

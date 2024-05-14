@@ -1,19 +1,17 @@
 package org.mts.service;
 
 
-import org.mts.abstracts.parent.AbstractAnimal;
+import org.mts.entity.Creature;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 public interface CreateAnimalService {
 
-    ConcurrentMap<String, List<AbstractAnimal>> createAnimals();
+    void createAnimals();
 
-    String defineTypeOfCurrentAnimal(AbstractAnimal animal);
+    String defineSecretInformation(Creature creature);
 
-    String defineSecretInformation(AbstractAnimal animal);
-
-    void writeAnimalToFile(AbstractAnimal animal);
+    void writeAnimalToFile(Creature creature);
 
 }

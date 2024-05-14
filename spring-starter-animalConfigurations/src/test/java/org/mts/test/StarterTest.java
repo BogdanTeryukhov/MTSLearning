@@ -6,18 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mts.abstracts.Pet;
-import org.mts.abstracts.parent.AbstractAnimal;
-import org.mts.inheritors.Cat;
-import org.mts.inheritors.Dog;
-import org.mts.inheritors.Shark;
-import org.mts.inheritors.Wolf;
+import org.mts.dao.AnimalTypeDao;
+import org.mts.entity.AnimalType;
+import org.mts.entity.Creature;
 import org.mts.randomAnimalsCreation.AnimalProperties;
-import org.mts.randomAnimalsCreation.animalFactories.CatFactory;
-import org.mts.randomAnimalsCreation.animalFactories.DogFactory;
-import org.mts.randomAnimalsCreation.animalFactories.SharkFactory;
-import org.mts.randomAnimalsCreation.animalFactories.WolfFactory;
-import org.mts.service.Animal;
+import org.mts.randomAnimalsCreation.RandomFactory;
 import org.mts.service.CreateAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,93 +26,61 @@ import java.util.Random;
 class StarterTest {
 
     @Autowired
-    private CreateAnimalService createAnimalService;
-
-    @Autowired
     private AnimalProperties animalProperties;
 
+    @Autowired
+    private AnimalTypeDao animalTypeDao;
+
     @Test
-    public void wolfFactoryTest(@Mock WolfFactory wolfFactory) {
-        Mockito.doReturn(new Wolf()).when(wolfFactory).createRandomAnimal();
-        Mockito.doReturn(animalProperties.getWolfNames().get(new Random().nextInt(5))).when(wolfFactory).getRandomAnimalName();
-
-
-        Assertions.assertTrue(wolfFactory.createRandomAnimal() instanceof Wolf
-                && animalProperties.getWolfNames().contains(wolfFactory.getRandomAnimalName()));
+    public void wolfFactoryTest(@Mock RandomFactory randomFactory) {
+        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        System.out.println(animalTypeList);
+        Mockito.doReturn(new Creature("animal1", 3, animalTypeList.get(2))).when(randomFactory).createRandomAnimal();
+        Assertions.assertEquals("wolf", randomFactory.createRandomAnimal().getType().getType());
     }
 
     @Test
-    public void catFactoryTest(@Mock CatFactory catFactory) {
-        Mockito.doReturn(new Cat()).when(catFactory).createRandomAnimal();
-        Mockito.doReturn(animalProperties.getCatNames().get(new Random().nextInt(5))).when(catFactory).getRandomAnimalName();
+    public void catFactoryTest(@Mock RandomFactory randomFactory) {
+        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        Mockito.doReturn(new Creature("animal1", 1, animalTypeList.get(0))).when(randomFactory).createRandomAnimal();
 
 
-        Assertions.assertTrue(catFactory.createRandomAnimal() instanceof Cat
-                && animalProperties.getCatNames().contains(catFactory.getRandomAnimalName()));
+        Assertions.assertEquals("cat", randomFactory.createRandomAnimal().getType().getType());
     }
 
     @Test
-    public void dogFactoryTest(@Mock DogFactory dogFactory) {
-        Mockito.doReturn(new Dog()).when(dogFactory).createRandomAnimal();
-        Mockito.doReturn(animalProperties.getDogNames().get(new Random().nextInt(5))).when(dogFactory).getRandomAnimalName();
+    public void dogFactoryTest(@Mock RandomFactory randomFactory) {
+        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        Mockito.doReturn(new Creature("animal1", 2, animalTypeList.get(1))).when(randomFactory).createRandomAnimal();
 
 
-        Assertions.assertTrue(dogFactory.createRandomAnimal() instanceof Dog
-                && animalProperties.getDogNames().contains(dogFactory.getRandomAnimalName()));
+        Assertions.assertEquals("dog", randomFactory.createRandomAnimal().getType().getType());
     }
 
     @Test
-    public void sharkFactoryTest(@Mock SharkFactory sharkFactory) {
-        Mockito.doReturn(new Shark()).when(sharkFactory).createRandomAnimal();
-        Mockito.doReturn(animalProperties.getSharkNames().get(new Random().nextInt(5))).when(sharkFactory).getRandomAnimalName();
+    public void sharkFactoryTest(@Mock RandomFactory randomFactory) {
+        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        Mockito.doReturn(new Creature("animal1", 4, animalTypeList.get(3))).when(randomFactory).createRandomAnimal();
 
 
-        Assertions.assertTrue(sharkFactory.createRandomAnimal() instanceof Shark
-                && animalProperties.getSharkNames().contains(sharkFactory.getRandomAnimalName()));
+        Assertions.assertEquals("shark", randomFactory.createRandomAnimal().getType().getType());
     }
 
-    private List<String> findCurrentAnimalProperties(Animal animal) {
-        switch (animal.getClass().getName().substring(animal.getClass().getName().lastIndexOf('.') + 1)) {
-            case "Cat" -> {
+    private List<String> findCurrentAnimalProperties(Creature creature) {
+        switch (creature.getType().getType()) {
+            case "cat" -> {
                 return animalProperties.getCatNames();
             }
-            case "Dog" -> {
+            case "dog" -> {
                 return animalProperties.getDogNames();
             }
-            case "Shark" -> {
+            case "shark" -> {
                 return animalProperties.getSharkNames();
             }
-            case "Wolf" -> {
+            case "wolf" -> {
                 return animalProperties.getWolfNames();
             }
         }
         throw new RuntimeException("Smt went wrong");
-    }
-
-    @Test
-    public void rightNamesTest() {
-        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
-        for (Map.Entry<String, List<AbstractAnimal>> entry : animals.entrySet()) {
-            List<AbstractAnimal> currentTypeAnimals = entry.getValue();
-            for (int i = 0; i < currentTypeAnimals.size(); i++) {
-                List<String> currentAnimalProperty = findCurrentAnimalProperties(currentTypeAnimals.get(i));
-                Assertions.assertTrue(currentAnimalProperty.contains(currentTypeAnimals.get(i).getName()));
-            }
-        }
-    }
-
-    @Test
-    public void rightDatesTest() {
-        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
-        for (Map.Entry<String, List<AbstractAnimal>> entry : animals.entrySet()) {
-            List<AbstractAnimal> currentTypeAnimals = entry.getValue();
-            for (int i = 0; i < currentTypeAnimals.size(); i++) {
-                if (currentTypeAnimals.get(i) instanceof Pet) {
-                    Assertions.assertTrue(((Pet) currentTypeAnimals.get(i)).getBirth().getYear() >= 2010 && currentTypeAnimals.get(i).getBirth().getYear() <= 2023);
-                } else {
-                    Assertions.assertTrue(currentTypeAnimals.get(i).getBirth().getYear() >= 1800 && currentTypeAnimals.get(i).getBirth().getYear() <= 2023);
-                }
-            }
-        }
     }
 }

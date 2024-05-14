@@ -1,10 +1,15 @@
 package org.mts.lab2.entity;
 
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
-@Component
+@Entity
+@Table(name = "habitat", schema = "animals")
 public class Habitat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "area")
     private String area;
 
     public Habitat() {

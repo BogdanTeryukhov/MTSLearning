@@ -2,8 +2,9 @@ package org.mts.lab2.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mts.abstracts.parent.AbstractAnimal;
-import org.mts.inheritors.Cat;
+import org.aspectj.weaver.tools.cache.CachedClassReference;
+import org.mts.dao.CreatureDao;
+import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.service.AnimalsRepository;
 import org.slf4j.Logger;
@@ -29,12 +30,15 @@ public class AnimalsScheduler implements Serializable {
     private AnimalsRepository animalsRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private CreatureDao creatureDao;
     Logger logger = LoggerFactory.getLogger(AnimalsScheduler.class);
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     @PostConstruct
     public void threadConstruction() {
-        CopyOnWriteArrayList<AbstractAnimal> concurrentAnimalsList = setUpTestArrayList();
+        List<Creature> creatures = creatureDao.findAll();
+        CopyOnWriteArrayList<Creature> concurrentAnimalsList = new CopyOnWriteArrayList<>(creatures);
         Thread printDuplicates = new Thread(() -> {
             Thread.currentThread().setName("findDuplicates() from thread");
             try {
@@ -59,27 +63,22 @@ public class AnimalsScheduler implements Serializable {
         scheduler.scheduleAtFixedRate(findAverage, 1, 15, TimeUnit.SECONDS);
     }
 
-    public CopyOnWriteArrayList<AbstractAnimal> setUpTestArrayList() {
-        List<AbstractAnimal> animalsList = List.of(new Cat("pete0", LocalDate.of(2015, 9, 20)),
-                new Cat("pete1", LocalDate.of(2010, 9, 20)),
-                new Cat("pete2", LocalDate.of(2014, 9, 20)));
-        return new CopyOnWriteArrayList<>(animalsList);
-    }
 
     @Scheduled(fixedDelay = 60000L)
     public void doScheduled() {
-        CopyOnWriteArrayList<AbstractAnimal> concurrentAnimalsList = setUpTestArrayList();
+        List<Creature> creatures = creatureDao.findAll();
+        CopyOnWriteArrayList<Creature> concurrentAnimalsList = new CopyOnWriteArrayList<>(creatures);
         getInfoFromFiles();
         try {
             logger.info("LeapYearStream");
-            animalsRepository.findLeapYearNames().forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
+            animalsRepository.findLeapYearNames().forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + (LocalDate.now().getYear() - value)));
             logger.info("method findLeapYearNames() invoked");
         } catch (Exception exception) {
             logger.error("Something went wrong with method findLeapYearNames()");
         }
         try {
             logger.info("FindOlderAnimal");
-            animalsRepository.findOlderAnimal(10).forEach((key, value) -> System.out.println("Key: " + key + " Age: " + value));
+            animalsRepository.findOlderAnimal(10).forEach((value) -> System.out.println("Age: " + value.getAge() + " SecretInfo: " + value.getSecretInfo()));
             logger.info("method findOlderAnimal() invoked");
         } catch (FindOlderAnimalsIllegalArgumentException exception) {
             logger.error("Input argument is illegal (less than 0)");
@@ -91,20 +90,6 @@ public class AnimalsScheduler implements Serializable {
             logger.info("method findDuplicates() invoked");
         } catch (Exception exception) {
             logger.error("Something went wrong with method findDuplicates()");
-        }
-        try {
-            logger.info("Find Old and Expensive");
-            animalsRepository.findOldAndExpensive(concurrentAnimalsList);
-            logger.info("method findOldAndExpensive() invoked");
-        } catch (Exception exception) {
-            logger.error("Something went wrong with method findOldAndExpensive()");
-        }
-        try {
-            logger.info("Find Min Cost Animals");
-            animalsRepository.findMinCostAnimals(concurrentAnimalsList);
-            logger.info("method findMinCostAnimals() invoked");
-        } catch (Exception exception) {
-            logger.error("Something went wrong with method findMinCostAnimals()");
         }
     }
 
@@ -119,23 +104,17 @@ public class AnimalsScheduler implements Serializable {
                 try {
                     switch (file.getName()) {
                         case "findLeapYearNames.json" -> {
-                            Map<String, LocalDate> map =
+                            Map<String, Short> map =
                                     objectMapper.readValue(currentFile, new TypeReference<>() {});
-                            map.forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + value));
+                            map.forEach((key, value) -> System.out.println("Key: " + key + " Age: " + value));
                         }
-                        case "findOlderAnimal.json", "findOldAndExpensive.json" -> {
-                            List<AbstractAnimal> animals =
+                        case "findOlderAnimal.json"-> {
+                            List<Creature> animals =
                                     objectMapper.readValue(currentFile, new TypeReference<>() {});
                             decodeListInfo(animals);
-                            animals.forEach(System.out::println);
-                        }
-                        case "findMinCostAnimals.json" -> {
-                            List<String> names =
-                                    objectMapper.readValue(currentFile, new TypeReference<>() {});
-                            names.forEach(System.out::println);
                         }
                         case "findDuplicate.json" -> {
-                            ConcurrentMap<String, List<AbstractAnimal>> finalResult =
+                            ConcurrentMap<String, List<Creature>> finalResult =
                                     objectMapper.readValue(currentFile, new TypeReference<>() {});
                             decodeMapInfo(finalResult);
                             finalResult.forEach((key, value) -> System.out.println("Key: " + key + " Animals List: " + value));
@@ -148,11 +127,13 @@ public class AnimalsScheduler implements Serializable {
         }
     }
 
-    public static void decodeListInfo(List<AbstractAnimal> animals) {
-        animals.forEach((animal) -> animal.setSecretInformation(new String(Base64.getDecoder().decode(animal.getSecretInformation()))));
+    public static void decodeListInfo(List<Creature> creatures) {
+        creatures.forEach((creature) -> creature.setSecretInfo(new String(Base64.getDecoder().decode(creature.getSecretInfo()))));
+//        System.out.println("Berries: ");
+//        creatures.forEach(System.out::println);
     }
 
-    public static <K> void decodeMapInfo(ConcurrentMap<K, List<AbstractAnimal>> map) {
-        map.forEach((key, value) -> value.forEach(elem -> elem.setSecretInformation(new String(Base64.getDecoder().decode(elem.getSecretInformation())))));
+    public static <K> void decodeMapInfo(ConcurrentMap<K, List<Creature>> map) {
+        map.forEach((key, value) -> value.forEach(elem -> elem.setSecretInfo(new String(Base64.getDecoder().decode(elem.getSecretInfo())))));
     }
 }
