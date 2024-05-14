@@ -4,11 +4,13 @@ import org.hibernate.Session;
 import org.mts.entity.AnimalType;
 import org.springframework.stereotype.Repository;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import java.util.List;
 
 @Repository
@@ -16,6 +18,7 @@ public class AnimalTypeDao extends AbstractHibernateDao<AnimalType> {
     public AnimalTypeDao() {
         setClazz(AnimalType.class);
     }
+
 
 
     public List<AnimalType> getAnimalTypes(Connection connection) throws SQLException {
@@ -30,5 +33,6 @@ public class AnimalTypeDao extends AbstractHibernateDao<AnimalType> {
             ));
         }
         return animalTypeList;
+
     }
 }

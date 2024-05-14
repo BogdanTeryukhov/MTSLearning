@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "provider", schema = "animals")
 public class Provider implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
