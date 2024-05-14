@@ -6,23 +6,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mts.dao.AnimalTypeDao;
-import org.mts.dao.CreatureDao;
 import org.mts.entity.AnimalType;
 import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
 import org.mts.lab2.service.impl.AnimalsRepositoryImpl;
 import org.mts.randomAnimalsCreation.RandomFactory;
+import org.mts.repository.AnimalTypeRepository;
+import org.mts.repository.CreatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SpringBootTest
@@ -33,9 +28,9 @@ class AnimalsRepositoryImplTest {
     @Autowired
     private AnimalsRepositoryImpl animalsRepository;
     @Autowired
-    private AnimalTypeDao animalTypeDao;
+    private AnimalTypeRepository animalTypeDao;
     @Autowired
-    private CreatureDao creatureDao;
+    private CreatureRepository creatureDao;
 
     @Test
     public void findOlderAnimalsTest(@Mock RandomFactory randomFactory) {

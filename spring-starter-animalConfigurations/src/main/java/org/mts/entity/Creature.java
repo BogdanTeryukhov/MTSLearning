@@ -16,15 +16,15 @@ public class Creature implements Serializable {
     private Long id;
     @Column(name = "name")
     private String name;
-
-    @Column(name = "type_id", insertable = false, updatable = false)
+    @Column(name = "type_id")
     private int typeId;
     @Column(name = "age")
     private short age;
     @Column(name = "secret_info")
     private String secretInfo;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = AnimalType.class)
+    @JoinColumn(name = "creature_id")
     private AnimalType type;
 
     public Creature() {

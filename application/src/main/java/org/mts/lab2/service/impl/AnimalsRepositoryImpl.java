@@ -1,16 +1,13 @@
 package org.mts.lab2.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mts.dao.CreatureDao;
 import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
 import org.mts.lab2.service.AnimalsRepository;
-import org.mts.service.CreateAnimalService;
+import org.mts.repository.CreatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,24 +27,14 @@ import java.util.stream.Collectors;
 public class AnimalsRepositoryImpl implements AnimalsRepository {
     private static final String path = "application/src/main/resources/results/";
     @Autowired
-    private CreateAnimalService createAnimalService;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private CreatureDao creatureDao;
-
-    private List<Creature> creatures;
-
-    @PostConstruct
-    private void postConstruct() {
-        createAnimalService.createAnimals();
-    }
+    private CreatureRepository creatureRepository;
 
     @Override
     public ConcurrentMap<String, Short> findLeapYearNames() {
-        List<Creature> creatures = creatureDao.findAll();
+        List<Creature> creatures = creatureRepository.findAll();
         Map<String, Short> leapMap = creatures
                 .stream()
                 .filter(creature -> (LocalDate.now().getYear() - creature.getAge() % 400 == 0) ||
@@ -66,7 +53,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
         if (number < 0) {
             throw new FindOlderAnimalsIllegalArgumentException();
         }
-        List<Creature> creatures = creatureDao
+        List<Creature> creatures = creatureRepository
                 .findAll()
                 .stream()
                 .filter(creature -> creature.getAge() > number)
@@ -81,7 +68,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     @Override
     public ConcurrentMap<String, List<Creature>> findDuplicate() {
         ConcurrentMap<String, List<Creature>> result = new ConcurrentHashMap<>();
-        List<Creature> creatures = creatureDao.findAll();
+        List<Creature> creatures = creatureRepository.findAll();
         Map<Creature, Long> mapStream = creatures
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))

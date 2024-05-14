@@ -6,19 +6,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mts.dao.AnimalTypeDao;
 import org.mts.entity.AnimalType;
 import org.mts.entity.Creature;
 import org.mts.randomAnimalsCreation.AnimalProperties;
 import org.mts.randomAnimalsCreation.RandomFactory;
-import org.mts.service.CreateAnimalService;
+import org.mts.repository.AnimalTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -29,11 +26,11 @@ class StarterTest {
     private AnimalProperties animalProperties;
 
     @Autowired
-    private AnimalTypeDao animalTypeDao;
+    private AnimalTypeRepository animalTypeRepository;
 
     @Test
     public void wolfFactoryTest(@Mock RandomFactory randomFactory) {
-        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        List<AnimalType> animalTypeList = animalTypeRepository.findAll();
         System.out.println(animalTypeList);
         Mockito.doReturn(new Creature("animal1", 3, animalTypeList.get(2))).when(randomFactory).createRandomAnimal();
         Assertions.assertEquals("wolf", randomFactory.createRandomAnimal().getType().getType());
@@ -41,7 +38,7 @@ class StarterTest {
 
     @Test
     public void catFactoryTest(@Mock RandomFactory randomFactory) {
-        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        List<AnimalType> animalTypeList = animalTypeRepository.findAll();
         Mockito.doReturn(new Creature("animal1", 1, animalTypeList.get(0))).when(randomFactory).createRandomAnimal();
 
 
@@ -50,7 +47,7 @@ class StarterTest {
 
     @Test
     public void dogFactoryTest(@Mock RandomFactory randomFactory) {
-        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        List<AnimalType> animalTypeList = animalTypeRepository.findAll();
         Mockito.doReturn(new Creature("animal1", 2, animalTypeList.get(1))).when(randomFactory).createRandomAnimal();
 
 
@@ -59,7 +56,7 @@ class StarterTest {
 
     @Test
     public void sharkFactoryTest(@Mock RandomFactory randomFactory) {
-        List<AnimalType> animalTypeList = animalTypeDao.findAll();
+        List<AnimalType> animalTypeList = animalTypeRepository.findAll();
         Mockito.doReturn(new Creature("animal1", 4, animalTypeList.get(3))).when(randomFactory).createRandomAnimal();
 
 

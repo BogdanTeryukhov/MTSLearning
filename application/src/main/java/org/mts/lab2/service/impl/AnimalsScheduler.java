@@ -2,11 +2,10 @@ package org.mts.lab2.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.weaver.tools.cache.CachedClassReference;
-import org.mts.dao.CreatureDao;
 import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.service.AnimalsRepository;
+import org.mts.repository.CreatureRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +30,13 @@ public class AnimalsScheduler implements Serializable {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private CreatureDao creatureDao;
+    private CreatureRepository creatureRepository;
     Logger logger = LoggerFactory.getLogger(AnimalsScheduler.class);
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     @PostConstruct
     public void threadConstruction() {
-        List<Creature> creatures = creatureDao.findAll();
+        List<Creature> creatures = creatureRepository.findAll();
         CopyOnWriteArrayList<Creature> concurrentAnimalsList = new CopyOnWriteArrayList<>(creatures);
         Thread printDuplicates = new Thread(() -> {
             Thread.currentThread().setName("findDuplicates() from thread");
@@ -66,7 +65,7 @@ public class AnimalsScheduler implements Serializable {
 
     @Scheduled(fixedDelay = 60000L)
     public void doScheduled() {
-        List<Creature> creatures = creatureDao.findAll();
+        List<Creature> creatures = creatureRepository.findAll();
         CopyOnWriteArrayList<Creature> concurrentAnimalsList = new CopyOnWriteArrayList<>(creatures);
         getInfoFromFiles();
         try {
@@ -129,8 +128,6 @@ public class AnimalsScheduler implements Serializable {
 
     public static void decodeListInfo(List<Creature> creatures) {
         creatures.forEach((creature) -> creature.setSecretInfo(new String(Base64.getDecoder().decode(creature.getSecretInfo()))));
-//        System.out.println("Berries: ");
-//        creatures.forEach(System.out::println);
     }
 
     public static <K> void decodeMapInfo(ConcurrentMap<K, List<Creature>> map) {
