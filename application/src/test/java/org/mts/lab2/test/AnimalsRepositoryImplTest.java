@@ -11,6 +11,8 @@ import org.mts.entity.Creature;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
 import org.mts.lab2.service.impl.AnimalsRepositoryImpl;
 import org.mts.randomAnimalsCreation.RandomFactory;
+import org.mts.repository.AnimalTypeRepository;
+import org.mts.repository.CreatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,9 +28,9 @@ class AnimalsRepositoryImplTest {
     @Autowired
     private AnimalsRepositoryImpl animalsRepository;
     @Autowired
-    private AnimalTypeDao animalTypeDao;
+    private AnimalTypeRepository animalTypeDao;
     @Autowired
-    private CreatureDao creatureDao;
+    private CreatureRepository creatureDao;
 
     @Test
     public void findOlderAnimalsTest(@Mock RandomFactory randomFactory) {

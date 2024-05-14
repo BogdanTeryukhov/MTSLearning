@@ -128,8 +128,6 @@ public class AnimalsScheduler implements Serializable {
 
     public static void decodeListInfo(List<Creature> creatures) {
         creatures.forEach((creature) -> creature.setSecretInfo(new String(Base64.getDecoder().decode(creature.getSecretInfo()))));
-//        System.out.println("Berries: ");
-//        creatures.forEach(System.out::println);
     }
 
     public static <K> void decodeMapInfo(ConcurrentMap<K, List<Creature>> map) {
