@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import javax.sql.DataSource;
 
 @Configuration
-@Profile("example")
 public class DBConfig {
 
     @Value("${spring.datasource.url}")
