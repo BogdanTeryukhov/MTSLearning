@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.mts.entity.Creature;
 import org.mts.repository.AnimalTypeRepository;
 import org.mts.repository.CreatureRepository;
+import org.mts.service.CreatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,19 +14,18 @@ import org.springframework.web.bind.annotation.*;
 public class CreatureController {
 
     @Autowired
-    private CreatureRepository creatureRepository;
-    @Autowired
-    private AnimalTypeRepository animalTypeRepository;
+    private CreatureService creatureService;
+
 
     @GetMapping("/allCreatures")
     private String getCreatures(Model model){
-        model.addAttribute("creatures", creatureRepository.findAll());
+        model.addAttribute("creatures", creatureService.findAllCreatures());
         return "allCreatures";
     }
 
     @GetMapping("/delete/{id}")
     private String deleteCreature(@PathVariable("id") long id){
-        creatureRepository.deleteById(id);
+        creatureService.deleteCreatureById(id);
         return "redirect:/allCreatures";
     }
 
@@ -37,8 +37,7 @@ public class CreatureController {
 
     @PostMapping(value = "/addCreature", params = "action=add")
     private String addCreature(@ModelAttribute("newCreature") Creature creature){
-        //creature.setType(animalTypeRepository.findById((long) creature.getTypeId()).orElseThrow());
-        creatureRepository.save(creature);
+        creatureService.saveCreature(creature);
         return "redirect:/allCreatures";
     }
 
