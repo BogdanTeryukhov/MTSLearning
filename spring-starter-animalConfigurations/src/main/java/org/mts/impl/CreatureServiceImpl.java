@@ -1,5 +1,6 @@
 package org.mts.impl;
 
+import org.mts.dto.CreatureDTO;
 import org.mts.entity.Creature;
 import org.mts.repository.CreatureRepository;
 import org.mts.service.CreatureService;
@@ -27,6 +28,11 @@ public class CreatureServiceImpl implements CreatureService {
     @Override
     public List<Creature> findAllCreatures() {
         return creatureRepository.findAll();
+    }
+
+    @Override
+    public Creature findCreatureById(Long id) {
+        return creatureRepository.findCreatureById(id).orElseThrow();
     }
 
 }
