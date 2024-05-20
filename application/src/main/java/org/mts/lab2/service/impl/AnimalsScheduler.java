@@ -41,7 +41,7 @@ public class AnimalsScheduler implements Serializable {
         Thread printDuplicates = new Thread(() -> {
             Thread.currentThread().setName("findDuplicates() from thread");
             try {
-                logger.info(Thread.currentThread().getName());
+                //logger.info(Thread.currentThread().getName());
                 animalsRepository.findDuplicate().forEach((key, value) -> System.out.println("Key: " + key + " AnimalsList: " + value));
             } catch (Exception exception) {
                 logger.error("Something went wrong with method findDuplicates()");
@@ -51,10 +51,10 @@ public class AnimalsScheduler implements Serializable {
         Thread findAverage = new Thread(() -> {
             Thread.currentThread().setName("findAverage() from thread");
             try {
-                logger.info(Thread.currentThread().getName());
+                //logger.info(Thread.currentThread().getName());
                 animalsRepository.findAverageAge(concurrentAnimalsList);
             } catch (Exception exception) {
-                logger.error("Something went wrong with method findAverage()");
+                //logger.error("Something went wrong with method findAverage()");
             }
         });
 
@@ -69,24 +69,24 @@ public class AnimalsScheduler implements Serializable {
         CopyOnWriteArrayList<Creature> concurrentAnimalsList = new CopyOnWriteArrayList<>(creatures);
         getInfoFromFiles();
         try {
-            logger.info("LeapYearStream");
+            //logger.info("LeapYearStream");
             animalsRepository.findLeapYearNames().forEach((key, value) -> System.out.println("Key: " + key + " Date of birth: " + (LocalDate.now().getYear() - value)));
-            logger.info("method findLeapYearNames() invoked");
+            //logger.info("method findLeapYearNames() invoked");
         } catch (Exception exception) {
             logger.error("Something went wrong with method findLeapYearNames()");
         }
         try {
-            logger.info("FindOlderAnimal");
+            //logger.info("FindOlderAnimal");
             animalsRepository.findOlderAnimal(10).forEach((value) -> System.out.println("Age: " + value.getAge() + " SecretInfo: " + value.getSecretInfo()));
-            logger.info("method findOlderAnimal() invoked");
+            //logger.info("method findOlderAnimal() invoked");
         } catch (FindOlderAnimalsIllegalArgumentException exception) {
             logger.error("Input argument is illegal (less than 0)");
         }
 
         try {
-            logger.info("Find duplicates");
+            //logger.info("Find duplicates");
             animalsRepository.findDuplicate().forEach((key, value) -> System.out.println("Key: " + key + " AnimalsList: " + value));
-            logger.info("method findDuplicates() invoked");
+            //logger.info("method findDuplicates() invoked");
         } catch (Exception exception) {
             logger.error("Something went wrong with method findDuplicates()");
         }
