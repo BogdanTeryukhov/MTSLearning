@@ -1,23 +1,17 @@
-package org.mts.lab2.entity;
+package org.mts.dto;
 
+import jakarta.persistence.*;
+import org.mts.entity.AnimalType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Creature {
+public class CreatureDTO {
     private Long id;
     private String name;
     private int typeId;
     private short age;
-
-    public Creature() {
-    }
-
-    public Creature(Long id, String name, int typeId, short age) {
-        this.id = id;
-        this.name = name;
-        this.typeId = typeId;
-        this.age = age;
-    }
+    private String secretInfo;
+    private AnimalType type;
 
     public Long getId() {
         return id;
@@ -51,13 +45,19 @@ public class Creature {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "Creature{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", typeId=" + typeId +
-                ", age=" + age +
-                '}';
+    public String getSecretInfo() {
+        return secretInfo;
+    }
+
+    public void setSecretInfo(String secretInfo) {
+        this.secretInfo = secretInfo;
+    }
+
+    public AnimalType getType() {
+        return type;
+    }
+
+    public void setType(AnimalType type) {
+        this.type = type;
     }
 }
