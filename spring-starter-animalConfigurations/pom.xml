@@ -15,6 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-project-conf>3.2.2</spring-project-conf>
     </properties>
 
     <dependencies>
@@ -30,14 +31,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
@@ -69,7 +70,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <!--MIGRATION-->

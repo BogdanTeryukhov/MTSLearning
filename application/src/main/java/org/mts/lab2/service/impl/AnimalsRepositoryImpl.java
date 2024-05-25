@@ -2,6 +2,8 @@ package org.mts.lab2.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mts.entity.Creature;
+import org.mts.lab2.annotations.Logging;
+import org.mts.lab2.enums.LoggingTypes;
 import org.mts.lab2.exception.checked.FindOlderAnimalsIllegalArgumentException;
 import org.mts.lab2.exception.checked.InputListIsEmptyException;
 import org.mts.lab2.service.AnimalsRepository;
@@ -33,6 +35,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     private CreatureRepository creatureRepository;
 
     @Override
+    @Logging(name = "Выполняем findLeapYearNames()", exiting = true, entering = true)
     public ConcurrentMap<String, Short> findLeapYearNames() {
         List<Creature> creatures = creatureRepository.findAll();
         Map<String, Short> leapMap = creatures
@@ -49,6 +52,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     }
 
     @Override
+    @Logging(name = "Выполняем findOlderAnimal()", exiting = true, entering = true)
     public CopyOnWriteArrayList<Creature> findOlderAnimal(int number) {
         if (number < 0) {
             throw new FindOlderAnimalsIllegalArgumentException();
@@ -66,6 +70,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     }
 
     @Override
+    @Logging(name = "Выполняем findDuplicate()", exiting = true, entering = true)
     public ConcurrentMap<String, List<Creature>> findDuplicate() {
         ConcurrentMap<String, List<Creature>> result = new ConcurrentHashMap<>();
         List<Creature> creatures = creatureRepository.findAll();
@@ -101,6 +106,7 @@ public class AnimalsRepositoryImpl implements AnimalsRepository {
     }
 
     @Override
+    @Logging(name = "Выполняем findAverageAge()", exiting = true, entering = true)
     public void findAverageAge(CopyOnWriteArrayList<Creature> animals) {
         if (animals.isEmpty()) {
             throw new InputListIsEmptyException();
