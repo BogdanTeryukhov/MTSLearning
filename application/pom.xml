@@ -15,6 +15,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-project>3.2.4</spring-project>
+        <spring-project-conf>3.2.2</spring-project-conf>
     </properties>
 
     <dependencies>
@@ -30,14 +32,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.2.5</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <!-- Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>3.2.5</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <!--H2-->
@@ -52,7 +54,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>3.2.5</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <!--LOMBOK-->
@@ -67,13 +69,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>3.2.4</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>3.2.4</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
@@ -120,7 +122,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <dependency>
@@ -141,7 +143,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <dependency>
@@ -155,7 +157,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>3.2.2</version>
+            <version>${spring-project-conf}</version>
         </dependency>
 
         <dependency>

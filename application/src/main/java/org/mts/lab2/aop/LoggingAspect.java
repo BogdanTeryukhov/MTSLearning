@@ -28,6 +28,7 @@ public class LoggingAspect {
             switch (Objects.requireNonNull(logging.level().toString())) {
                 case "INFO" -> log.info(ENTER, val);
                 case "DEBUG" -> log.debug(ENTER, val);
+                case "WARN" -> log.warn(ENTER, val);
                 case "ERROR" -> log.error(ENTER, val);
                 case "FATAL" -> log.fatal(ENTER, val);
             }
@@ -39,6 +40,7 @@ public class LoggingAspect {
             switch (Objects.requireNonNull(logging.level().toString())) {
                 case "INFO" -> log.info(EXIT, val);
                 case "DEBUG" -> log.debug(EXIT, val);
+                case "WARN" -> log.warn(EXIT, val);
                 case "ERROR" -> log.error(EXIT, val);
                 case "FATAL" -> log.fatal(EXIT, val);
             }

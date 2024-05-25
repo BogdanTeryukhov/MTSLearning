@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 public enum LoggingTypes {
     DEBUG,
+    WARN,
     INFO,
     ERROR,
     FATAL;
@@ -12,16 +13,19 @@ public enum LoggingTypes {
     public String toString() {
         switch (this){
             case INFO -> {
-                return "INFO";
+                return LoggingTypes.INFO.name();
+            }
+            case WARN -> {
+                return LoggingTypes.WARN.name();
             }
             case DEBUG -> {
-                return "DEBUG";
+                return LoggingTypes.DEBUG.name();
             }
             case ERROR -> {
-                return "ERROR";
+                return LoggingTypes.ERROR.name();
             }
             case FATAL -> {
-                return "FATAL";
+                return LoggingTypes.FATAL.name();
             }
             default -> {
                 return null;
