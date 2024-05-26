@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-project>3.2.4</spring-project>
-        <spring-project-conf>3.2.2</spring-project-conf>
+        <lombok-version>1.18.32</lombok-version>
     </properties>
 
     <dependencies>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>${lombok-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>${spring-project-conf}</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <dependency>
@@ -150,7 +150,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <version>${spring-project-conf}</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <dependency>
@@ -164,7 +164,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring-project-conf}</version>
+            <version>${spring-project}</version>
         </dependency>
 
         <dependency>
@@ -182,4 +182,3 @@
     </dependencies>
 
 </project>
-
